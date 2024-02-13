@@ -99,7 +99,7 @@ public class Main{
 }
 ```
 
-Ce qui nous redonne bien un objet (différent) avec les mêmes valeurs en attributs : 
+Ce qui nous donne bien un nouvel objet avec les mêmes valeurs en attributs que l'ancien, même après convertion en Json : 
 
 ```
 Cube("red", 10, 10) => {"color":"red","height":10,"width":50}
