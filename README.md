@@ -124,7 +124,7 @@ dependencies {
 ##### Avec Maven2/3
 Toujours d'après le Readme, il faut ajouter ceci :
 
-```maven
+```xml
 <dependencies>
     <!--  Gson: Java to JSON conversion -->
     <dependency>
