@@ -20,7 +20,7 @@ https://github.com/fabiovandewaeter/gson
 #### Fonctionnement du projet
 Ce programme permet, en Java, de convertir des objets Java en JSON, et inversement, avec des méthodes fonctionnant comme un `toString()`
 
-Par exemple, on peut convertir du Java en Json :
+Par exemple, on peut convertir du Java en Json grâce à la méthode `gson.toJson()` en passant en paramètre l'objet Java à convertir :
 
 ```java
 import com.google.gson.Gson;
@@ -65,7 +65,7 @@ test => "test"
 Cube("red", 10, 10) => {"color":"red","height":10,"width":50}
 ```
 
-Dans l'autre sens, il est possible de convertir du Json, sous forme de chaîne des caractères, en un objet Java :
+Dans l'autre sens, il est possible de convertir du Json, sous forme de chaîne des caractères, en un objet Java, grâce à la méthode `gson.fromJson()` en passant en paramètre la chaine de caractère Json à convertir ainsi que la classe de l'objet à retourner :
 
 ```java
 import com.google.gson.Gson;
@@ -108,8 +108,33 @@ Même objet ? false
 ```
 
 #### Créer l'archive du programme
+##### Sans Maven ou Gradle
+A la racine du projet, faire `mvn clean verify` pour obtenir l'archive dans le dossier `gson/gson/target/gson-2.10.2-SNAPSHOT.jar`
 
-A la racine du projet, faire `mvn package` pour obtenir l'archive dans le dossier `gson/gson/target/gson-2.10.2-SNAPSHOT.jar`
+##### Avec Gradle/Android
+
+D'après le Readme, il suffit d'ajouter cette dépendance :
+
+```gradle
+dependencies {
+    implementation 'com.google.code.gson:gson:2.10.1'
+}
+```
+
+##### Avec Maven2/3
+Toujours d'après le Readme, il faut ajouter ceci :
+
+```maven
+<dependencies>
+    <!--  Gson: Java to JSON conversion -->
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.10.1</version>
+      <scope>compile</scope>
+    </dependency>
+</dependencies>
+```
 
 #### Analyse du code
 https://github.com/fabiovandewaeter/gson/blob/main/GsonDesignDocument.md
