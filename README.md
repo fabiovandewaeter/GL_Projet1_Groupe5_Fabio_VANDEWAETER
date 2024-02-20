@@ -138,7 +138,47 @@ Toujours d'après le Readme, il faut ajouter ceci :
 
 Dans le dépôt de ce compte rendu, il y a un dossier `bac_a_sable` dans lequel se trouve un main Java permettant d'essayer gson avec la commande `make main`
 
-#### Analyse du code
+### 1.2) Description du projet
+
+#### Readme
+
+Le dépôt contient un Readme à jour malgré le fait que le projet soit en "maintenance mode" (d'après le Readme), donc qu'il ne soit plus prévu d'ajouter de fonctionnalités
+
+#### Documentation
+
+En plus du fichier `README.md`, le fichier `GsonDesignDocument.md` donne des détails sur les choix faits lors de la conception du programme
+
+Le fichier `Troubleshooting.md`, quant à lui, détaille le fonctionnement des exceptions
+
+Le fichier `UserGuide.md` vient compléter le Readme dans tous ses aspects
+
+Ces informations sont suffisantes pour permettre d'utiliser le programme
+
+## 2) Historique du logiciel
+### 2.1) Analyse du git
+
+#### Composition de l'équipe
+Le projet compte 145 contributeurs mais les 6 plus gros contributeurs ont participé significativement plus que les autres
+
+La grande majorité des contributions ont eu lieu entre 2008 et 2015
+
+#### Activité du projet
+Le projet a été crée en 2008 et étant en "maintenance mode" depuis 2014 (ce qui signifie ici qu'il n'y aura pas de nouvelles fonctionnalités ajoutées), il est donc normal de voir que pratiquement aucun commit n'a eu lieu depuis 2014
+
+![historique des commits](assets/commits-history.png)
+
+#### Branches
+
+Il y a eu 18 branches au total et 8 branches sont encore actives dont :
+- la branche `main`
+- 6 branches gérée par `dependabot`, un programme qui met automatiquement à jour les dépendances du projet Github
+- une branche gérée par `OSSF Scorecard` qui gère la sécurité du projet
+
+#### Pull requests
+
+Les pulls requests sont utilisées depuis 2015 sur le dépôt, avec des labels en fonction du type de modifications à apporter ; il y a actuellement 105 pulls requests ouvertes, notamment pour mettre à jour des dépendances, et 874 fermées
+
+#### Documentation
 https://github.com/fabiovandewaeter/gson/blob/main/GsonDesignDocument.md
 
 https://www.javadoc.io/doc/com.google.code.gson/gson/latest/com.google.gson/module-summary.html
