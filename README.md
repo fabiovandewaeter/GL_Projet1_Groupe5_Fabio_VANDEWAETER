@@ -11,12 +11,12 @@ Les plugins :
 - Statistic
 - Statistic View
 
-## Présentation globale du projet
+## 1 Présentation globale du projet
 
 Il s'agit du logiciel GSon qui a été forké :
 https://github.com/fabiovandewaeter/gson
 
-### Utilité du projet
+### 1.1 Utilité du projet
 #### Fonctionnement du projet
 Ce programme permet, en Java, de convertir des objets Java en JSON, et inversement, avec des méthodes fonctionnant comme un `toString()`
 
@@ -108,10 +108,10 @@ Même objet ? false
 ```
 
 #### Créer l'archive du programme
-##### Sans Maven ou Gradle
+##### > Sans Maven ou Gradle
 A la racine du projet, faire `mvn clean verify` pour obtenir l'archive dans le dossier `gson/gson/target/gson-2.10.2-SNAPSHOT.jar`
 
-##### Avec Gradle/Android
+##### > Avec Gradle/Android
 
 D'après le Readme, il suffit d'ajouter cette dépendance :
 
@@ -121,7 +121,7 @@ dependencies {
 }
 ```
 
-##### Avec Maven2/3
+##### > Avec Maven2/3
 Toujours d'après le Readme, il faut ajouter ceci :
 
 ```xml
@@ -135,6 +135,8 @@ Toujours d'après le Readme, il faut ajouter ceci :
     </dependency>
 </dependencies>
 ```
+
+Dans le dépôt de ce compte rendu, il y a un dossier `bac_a_sable` dans lequel se trouve un main Java permettant d'essayer gson avec la commande `make main`
 
 #### Analyse du code
 https://github.com/fabiovandewaeter/gson/blob/main/GsonDesignDocument.md
