@@ -165,7 +165,8 @@ La grande majorité des contributions ont eu lieu entre 2008 et 2015
 #### Activité du projet
 Le projet a été crée en 2008 et étant en "maintenance mode" depuis 2014 (ce qui signifie ici qu'il n'y aura pas de nouvelles fonctionnalités ajoutées), il est donc normal de voir que pratiquement aucun commit n'a eu lieu depuis 2014
 
-![historique des commits](assets/commits-history.png)
+![commits-history](https://github.com/fabiovandewaeter/GL_Projet1_Groupe5_Fabio_VANDEWAETER/assets/134401954/4c5c4a66-0f8a-4a1b-b864-ce8c29b59207)
+
 
 #### Branches
 
