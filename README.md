@@ -4,15 +4,6 @@ Explication des dossiers et fichiers du dépôt du Projet1 :
 - `bac_a_sable` contient l'archive du dépôt `gson` analysé ainsi qu'un main Java pour pouvoir expérimenter (lancer avec la commande `make main`)
 - `README.md` sert de compte rendu à ce Projet 1
 
-## Outils utilisés
-
-### Intellij
-Les plugins :
-- Code Metrics
-- Metrics Reloaded
-- Statistic
-- Statistic View
-
 ## 1 Présentation globale du projet
 
 Il s'agit du logiciel GSon qui a été forké :
