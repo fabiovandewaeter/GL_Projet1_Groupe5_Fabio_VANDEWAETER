@@ -1,6 +1,8 @@
 # GL_Projet1_Groupe5_Fabio_VANDEWAETER
 
-Dépôt du Projet1
+Explication des dossiers et fichiers du dépôt du Projet1 :
+- `bac_a_sable` contient l'archive du dépôt `gson` analysé ainsi qu'un main Java pour pouvoir expérimenter (lancer avec la commande `make main`)
+- `README.md` sert de compte rendu à ce Projet 1
 
 ## Outils utilisés
 
@@ -178,6 +180,10 @@ Il y a eu 18 branches au total et 8 branches sont encore actives dont :
 #### Pull requests
 
 Les pulls requests sont utilisées depuis 2015 sur le dépôt, avec des labels en fonction du type de modifications à apporter ; il y a actuellement 105 pulls requests ouvertes, notamment pour mettre à jour des dépendances, et 874 fermées
+
+## 3) Architecture logicielle
+### 3.1) Utilisation de bibliothèques extérieures
+
 
 #### Documentation
 https://github.com/fabiovandewaeter/gson/blob/main/GsonDesignDocument.md
