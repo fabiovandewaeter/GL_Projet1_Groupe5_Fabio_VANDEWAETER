@@ -104,6 +104,8 @@ Même objet ? false
 ##### > Sans Maven ou Gradle
 A la racine du projet, faire `mvn clean verify` pour obtenir l'archive dans le dossier `gson/gson/target/gson-2.10.2-SNAPSHOT.jar`
 
+Le dépôt contient divers dossiers, par exemple `gson/extras` qui contient des fonctionnalités non fournies par défaut ou `gson/metrics` qui permet aux développeurs de faire des benchmarks de leur côté, mais le dossier le plus important, avec plus de 200 classes, est le dossier `gson/gson`, qui permet d'obtenir l'archive
+
 ##### > Avec Gradle/Android
 
 D'après le Readme, il suffit d'ajouter cette dépendance :
@@ -174,11 +176,53 @@ Les pulls requests sont utilisées depuis 2015 sur le dépôt, avec des labels e
 
 ## 3) Architecture logicielle
 ### 3.1) Utilisation de bibliothèques extérieures
+(PAS FAIT)
+### 3.2) Organisation en paquetages
+Le projet `gson/gson` est composé de 9 packages, qui se trouvent dans le dossier `gson/gson/src/main/java` :
+> `com.google.gson` contient tous les autres packages
+>> `com.google.gson.annotations` qui fournit des annotations qui peuvent être utilisées avec le projet
+
+>> `com.google.gson.internal` qui permet au projet de fonctionner mais ne doit pas être accédé directement
+>>> `com.google.gson.internal.bind`
+>>> `com.google.gson.internal.bind.util`
+>>> `com.google.gson.internal.reflect`
+>>> `com.google.gson.internal.sql`
+>> `com.google.gson.reflect` qui donne des informations sur les types
+>> `com.google.gson.stream` qui fournit des classes pour traiter le JSON de manière efficace
+
+Dans le dossier `gson/gson/src/test/java` on retrouve globalement la même structure avec quelques changements :
+1) `com.google.gson.annotations` n'est pas testé
+2) `com.google.gson.common` est un nouveau package qui ajoute des méthodes pour les autres tests
+2) `com.google.gson.functional` est un nouveau package qui test le projet de façon plus globale avec des tests fonctionnels
+3) `com.google.gson.metrics` est un nouveau package qui test les performances
+4) `com.google.gson.regression` est un nouveau package
+
+Globalement, les packages ont des noms pertinents et séparent les fonctions du projet de façon pertinente, en plus de rester cohérent avec la structure des test
+
+### 3.3) Répartition des classes dans les paquetages
+Le projet comporte 252 classes au total dont 203 dans `gson/gson`, avec 84 classes dans `gson/gson/src/main` et 119 classes de test dans `gson/gson/src/test`
+
+La majorité des classes se trouvent uniquement dans le packetage `com.google.gson` mais le le package `com.google.gson.reflect` ne contient qu'une classe, ce qui montre que ce choix de répartition en package est pertinent
+
+### 3.4) Organisation des classes
+(PAS FAIT)
+
+## 4) Analyse approfondie
+### 4.1) Tests
+
+
+
+
+
+
+
+
+
+
+
 
 
 #### Documentation
 https://github.com/fabiovandewaeter/gson/blob/main/GsonDesignDocument.md
-
 https://www.javadoc.io/doc/com.google.code.gson/gson/latest/com.google.gson/module-summary.html
-
 https://github.com/fabiovandewaeter/gson/blob/main/UserGuide.md
