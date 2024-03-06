@@ -221,7 +221,7 @@ Comme on pouvait s'y attendre les packages `com.google.gson.regression` et `com.
 
 #### Coverage
 
-![Coverage](./assets/coverage.png)
+![Test coverage](./assets/coverage.png)
 
 Sonarqube indique 89.6% du code de `gson/gson/src/main` est testé, ce qui est satisfaisant car les classes essentielles sont bien testées
 
@@ -233,7 +233,22 @@ Les tests sont des tests unitaires sauf dans le package `com.google.gson.functio
 
 Les tests 1360 tests passent sans erreurs et même si 19 ne sont pas exécutés, cela est très satisfaisant
 
+#### Améliorations possibles
 
+On pourrait ajouter des tests aux classes `com.google.gson.JsonParser` et `com.google.gson.JsonElement` qui ont aux alentours de 50% de coverage, puis compléter certaines classes de tests pour tester des cas relativements simples
+
+### 4.2) Commentaires
+#### Nombre de lignes de commentaire
+![Javadoc coverage](./assets/javadoc_coverage.png)
+Le tableau ci-dessus présente différentes statistiques sur la javadoc de `gson/gson`, avec le coverage des classes (Jc), le coverage des attributs (Jf), le nombre de lignes de javadoc (JLOC) ainsi que le coverage des méthodes
+
+
+#### Type de commentaire
+Le code est largement commenté dans le format de la Javadoc, avec les licences en début de fichier
+
+#### Parties sans commentaires
+
+Le code est donc largement commenté en dehors des packages `com.google.gson.internal`, car ces derniers ne sont pas censé être accédés directement lors de l'utilisation de l'API ; cela peut poser problème pour les développeurs eux-mêmes qui pourraient ne pas s'y retrouver par manque de documentation, et il serait pertinent d'essayer d'ajouter des commentaires à certaines méthodes, notamment pour expliquer dans quel contexte elles sont utilisées dans le projet
 
 
 
