@@ -200,7 +200,7 @@ Dans le dossier `gson/gson/src/test/java` on retrouve globalement la même struc
 Globalement, les packages ont des noms pertinents et séparent les fonctions du projet de façon pertinente, en plus de rester cohérent avec la structure des test
 
 ### 3.3) Répartition des classes dans les paquetages
-Le projet comporte 252 classes au total dont 203 dans `gson/gson`, avec 84 classes dans `gson/gson/src/main` et 119 classes de test dans `gson/gson/src/test`
+Le projet comporte 252 classes au total dont 202 dans `gson/gson`, avec 83 classes dans `gson/gson/src/main` et 119 classes de test dans `gson/gson/src/test`
 
 La majorité des classes se trouvent uniquement dans le packetage `com.google.gson` mais le le package `com.google.gson.reflect` ne contient qu'une classe, ce qui montre que ce choix de répartition en package est pertinent
 
@@ -209,8 +209,28 @@ La majorité des classes se trouvent uniquement dans le packetage `com.google.gs
 
 ## 4) Analyse approfondie
 ### 4.1) Tests
+On lance les tests dans le dossier `gson/gson` grâce à la commande `mvn test`
 
+#### Metrics
+![JUnit metrics](./assets/JUnit-metrics-gson.png)
 
+Le tableau ci-dessus présente des statistiques sur les tests JUnit du dossier `gson/gson/src/test` avec le nombre d'assertions de test (JTA), le nombre de classes de test (JTC) et le nombre de méthodes de test (JTM)
+
+Comme on pouvait s'y attendre les packages `com.google.gson.regression` et `com.google.gson.metrics` et `com.google.gson.common` comportent peu de tests car ils sont là pour compléter les autres tests ou n'ont pas besoin d'être testés
+
+#### Coverage
+
+![Coverage](./assets/coverage.png)
+
+Sonarqube indique 89.6% du code de `gson/gson/src/main` est testé, ce qui est satisfaisant car les classes essentielles sont bien testées
+
+#### Type de tests
+Les tests sont des tests unitaires sauf dans le package `com.google.gson.functional` qui contient des test fonctionnel, ce qui permet de tests les méthodes mais aussi de vérifier qu'elles intéragissent bien entre-elles du début à la fin
+
+#### Resultat des tests
+![Test success](./assets/test_success.png)
+
+Les tests 1360 tests passent sans erreurs et même si 19 ne sont pas exécutés, cela est très satisfaisant
 
 
 
