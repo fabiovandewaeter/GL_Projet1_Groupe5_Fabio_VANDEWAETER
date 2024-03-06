@@ -187,6 +187,7 @@ Le projet `gson/gson` est composé de 9 packages, qui se trouvent dans le dossie
 >>> `com.google.gson.internal.bind.util`
 >>> `com.google.gson.internal.reflect`
 >>> `com.google.gson.internal.sql`
+
 >> `com.google.gson.reflect` qui donne des informations sur les types
 >> `com.google.gson.stream` qui fournit des classes pour traiter le JSON de manière efficace
 
