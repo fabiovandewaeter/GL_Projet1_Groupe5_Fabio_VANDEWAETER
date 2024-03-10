@@ -235,7 +235,7 @@ Les tests 1360 tests passent sans erreurs et même si 19 ne sont pas exécutés,
 
 #### Améliorations possibles
 
-On pourrait ajouter des tests aux classes `com.google.gson.JsonParser` et `com.google.gson.JsonElement` qui ont aux alentours de 50% de coverage, puis compléter certaines classes de tests pour tester des cas relativements simples
+On pourrait ajouter des tests aux classes `com.google.gson.JsonParser` et `com.google.gson.JsonElement` qui ont environ 50% de coverage, puis compléter certaines classes de tests pour tester des cas relativements simples qui ne sont pas encore testés
 
 ### 4.2) Commentaires
 #### Nombre de lignes de commentaire
@@ -248,7 +248,12 @@ Le code est largement commenté dans le format de la Javadoc, avec les licences 
 
 #### Parties sans commentaires
 
-Le code est donc largement commenté en dehors des packages `com.google.gson.internal`, car ces derniers ne sont pas censé être accédés directement lors de l'utilisation de l'API ; cela peut poser problème pour les développeurs eux-mêmes qui pourraient ne pas s'y retrouver par manque de documentation, et il serait pertinent d'essayer d'ajouter des commentaires à certaines méthodes, notamment pour expliquer dans quel contexte elles sont utilisées dans le projet
+Le code est donc largement commenté en dehors des packages `com.google.gson.internal`, car ces derniers ne sont pas censé être accédés directement lors de l'utilisation de l'API ; cela peut poser problème pour les développeurs eux-mêmes qui pourraient ne pas s'y retrouver par manque de documentation, et il serait pertinent d'ajouter des commentaires à certaines méthodes, notamment pour expliquer dans quel contexte elles sont utilisées dans le projet
+
+### 4.3) Dépréciation
+(PAS FAIT)
+
+### 4.4) Duplication de code
 
 
 
