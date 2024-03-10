@@ -254,10 +254,57 @@ Le code est donc largement commenté en dehors des packages `com.google.gson.int
 (PAS FAIT)
 
 ### 4.4) Duplication de code
+Il n'y a pratiquement pas de duplication de code, mais on peut trouver du code dupliqué dans le fichier `gson/gson/src/main.java/com/google/gson/internal/bind/TypeAdapters.java`, de façon très légère, par exemple pour les lignes 197-209 et 232-244, mais cela se répère dans les méthodes de type `public statis final TypeAdapter<T>` :
+```java
+  public static final TypeAdapter<Number> SHORT =
+      new TypeAdapter<Number>() {
+        @Override
+        public Number read(JsonReader in) throws IOException {
+          if (in.peek() == JsonToken.NULL) {
+            in.nextNull();
+            return null;
+          }
+
+          int intValue;
+          try {
+            intValue = in.nextInt();
+          } catch (NumberFormatException e) {
+            throw new JsonSyntaxException(e);
+          }
+```
+```java
+  public static final TypeAdapter<Number> BYTE =
+      new TypeAdapter<Number>() {
+        @Override
+        public Number read(JsonReader in) throws IOException {
+          if (in.peek() == JsonToken.NULL) {
+            in.nextNull();
+            return null;
+          }
+
+          int intValue;
+          try {
+            intValue = in.nextInt();
+          } catch (NumberFormatException e) {
+            throw new JsonSyntaxException(e);
+          }
+```
 
 
+Il semble donc possible d'améliorer cela en créant de petites fonctions qui gèrent les différentes parties communes à ces méthodes
+
+### 4.5) God Classes
+Même si la majorité des classes sont peu complexes, quelques-unes sont particuliérement imposantes ; par exemple ces méthodes on une complexité (WMC) particuliérement élevée :
+
+![God Classes](./assets/god_class.png)
+
+Il en va de même pour les fichiers de tests de ces classes, mais cela est moins impactant
+
+#### Améliorations possibles
+Avec beaucoup de temps il serait possible de séparer ces classes en sous-classes plus spécialisées et simples à maintenir, même si cela demenderai beacoups de temps
 
 
+Nombre magique dans `gson/gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java` dans tous les trucs du stype TypeAdapter<T>
 
 
 
