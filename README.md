@@ -240,13 +240,12 @@ On pourrait ajouter des tests aux classes `com.google.gson.JsonParser` et `com.g
 ### 4.2) Commentaires
 #### Nombre de lignes de commentaire
 ![Javadoc coverage](./assets/javadoc_coverage.png)
-Le tableau ci-dessus présente différentes statistiques sur la javadoc de `gson/gson`, avec le coverage des classes (Jc), le coverage des attributs (Jf), le nombre de lignes de javadoc (JLOC) ainsi que le coverage des méthodes
-
+Le tableau ci-dessus présente différentes statistiques sur la javadoc de `gson/gson`, avec le coverage des classes (Jc), le coverage des attributs (Jf), le nombre de lignes de javadoc (JLOC) ainsi que le coverage des méthodes (Jm)
 
 #### Type de commentaire
 Le code est largement commenté dans le format de la Javadoc, avec les licences en début de fichier
 
-#### Parties sans commentaires
+#### Parties sans commentaires et conclusion
 
 Le code est donc largement commenté en dehors des packages `com.google.gson.internal`, car ces derniers ne sont pas censé être accédés directement lors de l'utilisation de l'API ; cela peut poser problème pour les développeurs eux-mêmes qui pourraient ne pas s'y retrouver par manque de documentation, et il serait pertinent d'ajouter des commentaires à certaines méthodes, notamment pour expliquer dans quel contexte elles sont utilisées dans le projet
 
@@ -302,6 +301,171 @@ Il en va de même pour les fichiers de tests de ces classes, mais cela est moins
 
 #### Améliorations possibles
 Avec beaucoup de temps il serait possible de séparer ces classes en sous-classes plus spécialisées et simples à maintenir, même si cela demenderai beacoups de temps
+
+### 4.6) Analyse des méthodes
+
+#### Complexité cyclomatique
+
+![Complexité](./assets/complexity.png)
+
+Le tableau ci-dessus nous donne la complexité cyclomatique (v(G)) totale et moyenne, et même si cette dernière basse, certaines méthodes sont beaucoup plus complexes, comme par exemple la méthode `com.google.gson.stream.JsonReader.doPeek()` qui a une complexité cyclomatique de 40 avec la même méthode de calcul, ce qui est problématique :
+
+```java
+int doPeek() throws IOException {
+    int peekStack = stack[stackSize - 1];
+    if (peekStack == JsonScope.EMPTY_ARRAY) {
+      stack[stackSize - 1] = JsonScope.NONEMPTY_ARRAY;
+    } else if (peekStack == JsonScope.NONEMPTY_ARRAY) {
+      // Look for a comma before the next element.
+      int c = nextNonWhitespace(true);
+      switch (c) {
+        case ']':
+          return peeked = PEEKED_END_ARRAY;
+        case ';':
+          checkLenient(); // fall-through
+        case ',':
+          break;
+        default:
+          throw syntaxError("Unterminated array");
+      }
+    } else if (peekStack == JsonScope.EMPTY_OBJECT || peekStack == JsonScope.NONEMPTY_OBJECT) {
+      stack[stackSize - 1] = JsonScope.DANGLING_NAME;
+      // Look for a comma before the next element.
+      if (peekStack == JsonScope.NONEMPTY_OBJECT) {
+        int c = nextNonWhitespace(true);
+        switch (c) {
+          case '}':
+            return peeked = PEEKED_END_OBJECT;
+          case ';':
+            checkLenient(); // fall-through
+          case ',':
+            break;
+          default:
+            throw syntaxError("Unterminated object");
+        }
+      }
+      int c = nextNonWhitespace(true);
+      switch (c) {
+        case '"':
+          return peeked = PEEKED_DOUBLE_QUOTED_NAME;
+        case '\'':
+          checkLenient();
+          return peeked = PEEKED_SINGLE_QUOTED_NAME;
+        case '}':
+          if (peekStack != JsonScope.NONEMPTY_OBJECT) {
+            return peeked = PEEKED_END_OBJECT;
+          } else {
+            throw syntaxError("Expected name");
+          }
+        default:
+          checkLenient();
+          pos--; // Don't consume the first character in an unquoted string.
+          if (isLiteral((char) c)) {
+            return peeked = PEEKED_UNQUOTED_NAME;
+          } else {
+            throw syntaxError("Expected name");
+          }
+      }
+    } else if (peekStack == JsonScope.DANGLING_NAME) {
+      stack[stackSize - 1] = JsonScope.NONEMPTY_OBJECT;
+      // Look for a colon before the value.
+      int c = nextNonWhitespace(true);
+      switch (c) {
+        case ':':
+          break;
+        case '=':
+          checkLenient();
+          if ((pos < limit || fillBuffer(1)) && buffer[pos] == '>') {
+            pos++;
+          }
+          break;
+        default:
+          throw syntaxError("Expected ':'");
+      }
+    } else if (peekStack == JsonScope.EMPTY_DOCUMENT) {
+      if (strictness == Strictness.LENIENT) {
+        consumeNonExecutePrefix();
+      }
+      stack[stackSize - 1] = JsonScope.NONEMPTY_DOCUMENT;
+    } else if (peekStack == JsonScope.NONEMPTY_DOCUMENT) {
+      int c = nextNonWhitespace(false);
+      if (c == -1) {
+        return peeked = PEEKED_EOF;
+      } else {
+        checkLenient();
+        pos--;
+      }
+    } else if (peekStack == JsonScope.CLOSED) {
+      throw new IllegalStateException("JsonReader is closed");
+    }
+
+    int c = nextNonWhitespace(true);
+    switch (c) {
+      case ']':
+        if (peekStack == JsonScope.EMPTY_ARRAY) {
+          return peeked = PEEKED_END_ARRAY;
+        }
+        // fall-through to handle ",]"
+      case ';':
+      case ',':
+        // In lenient mode, a 0-length literal in an array means 'null'.
+        if (peekStack == JsonScope.EMPTY_ARRAY || peekStack == JsonScope.NONEMPTY_ARRAY) {
+          checkLenient();
+          pos--;
+          return peeked = PEEKED_NULL;
+        } else {
+          throw syntaxError("Unexpected value");
+        }
+      case '\'':
+        checkLenient();
+        return peeked = PEEKED_SINGLE_QUOTED;
+      case '"':
+        return peeked = PEEKED_DOUBLE_QUOTED;
+      case '[':
+        return peeked = PEEKED_BEGIN_ARRAY;
+      case '{':
+        return peeked = PEEKED_BEGIN_OBJECT;
+      default:
+        pos--; // Don't consume the first character in a literal value.
+    }
+
+    int result = peekKeyword();
+    if (result != PEEKED_NONE) {
+      return result;
+    }
+
+    result = peekNumber();
+    if (result != PEEKED_NONE) {
+      return result;
+    }
+
+    if (!isLiteral(buffer[pos])) {
+      throw syntaxError("Expected value");
+    }
+
+    checkLenient();
+    return peeked = PEEKED_UNQUOTED;
+  }
+```
+
+#### Analyse des commentairse
+
+Même si nous avons vu que le coverage Javadoc du code est élevé, cette méthode `com.google.gson.stream.JsonReader.doPeek()` n'a aucun commentaires alors qu'elle est très complexe, ce qui aggrave le problème
+
+plusieurs méthodes complexes de cette classe ne sont pas testées non-plus, ce qui est un vrai problème
+
+#### Nombre de lignes de codes
+
+D'après les outils d'analyses d'IntelliJ, il y a en moyenne 14.50 lignes de code par méthode, ce qui est élevé et est expliqué par le fait qu'il existe beaucoup de méthodes complexes comme `com.google.gson.stream.JsonReader.doPeek()` pour analyser le code et le traduire du Java au Json ou inversement
+
+#### Nombre d'arguments
+
+La moyenne du nombre d'arguments est à 1.01, cependant il existe 14 méthodes avec plus de 3 paramètres, ce qui est faible au vu du nombre de méthodes, cependant le constructeur `com.google.gson.Gson.Gson()` demande 21 paramètres, ce qui est très élevé
+
+En dehors des constructeurs, on peut trouver les méthodes `com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.createrBoundField()` avec 7 paramètres et `com.google.gson.internal.bind.MapTypeAdapterFactory.Adapter.Adapter()` avec 6 paramètres ; de façon plus générale, les méthodes du package `com.google.gson.internal` ont souvent plus de 3 paramètres, ce qui peut s'expliquer par le fait qu'elles ne soient pas destinées à être utilisées en dehors du développement du projet, même si cela est également problématique car complexifie la maintenance du code
+
+
+
 
 
 Nombre magique dans `gson/gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java` dans tous les trucs du stype TypeAdapter<T>
