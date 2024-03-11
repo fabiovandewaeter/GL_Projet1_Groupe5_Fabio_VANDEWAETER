@@ -465,9 +465,19 @@ La moyenne du nombre d'arguments est à 1.01, cependant il existe 14 méthodes a
 
 En dehors des constructeurs, on peut trouver les méthodes `com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.createrBoundField()` avec 7 paramètres et `com.google.gson.internal.bind.MapTypeAdapterFactory.Adapter.Adapter()` avec 6 paramètres ; de façon plus générale, les méthodes du package `com.google.gson.internal` ont souvent plus de 3 paramètres, ce qui peut s'expliquer par le fait qu'elles ne soient pas destinées à être utilisées en dehors du développement du projet, même si cela est également problématique car complexifie la maintenance du code
 
+## 5) Nettoyage de Code et Code smells
 
+![Code smells](./assets/code_smells.png)
 
+Sonarcube détecte 382 code smells mais estime que cela est peu
 
+![Debt](./assets/debt.png)
+
+Même si le code fonctionne, il serait très interessant de supprimer ces code smells et sonarcube estime que cela pourrait demander moins de 30 minutes pour une grande partie des code smells, et à l'extrême la classe `com.google.gson.stream.JsonReader` pourrait demander plus d'un jour de travail pour traiter cette dette technique
+
+### 5.1) Règles de nommage
+
+nommage : `com.google.gson.internal.JavaVersion` majorJavaVersion
 
 Nombre magique dans `gson/gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java` dans tous les trucs du stype TypeAdapter<T>
 
