@@ -217,7 +217,17 @@ Le projet comporte 252 classes au total dont 202 dans `gson/gson`, avec 83 class
 La majorité des classes se trouvent uniquement dans le packetage `com.google.gson` mais le le package `com.google.gson.reflect` ne contient qu'une classe, ce qui montre que ce choix de répartition en package est pertinent
 
 ### 3.4) Organisation des classes
-(PAS FAIT)
+![Coupling0](./assets/coupling0.png)
+![Coupling](./assets/coupling.png)
+
+Le tableau ci-dessus présente, pour les classes, le nombre de dépendences (Dcy), de dépendences de packages (PDpt) ainsi que le couplage entre deux objets
+
+On constate que les classes sont très dépendantes les unes des autres et que l'on ne peut pas réellement les réutiliser ou les modifiers sans impacter les autres
+
+
+![Coupling2](./assets/coupling2.png)
+
+Ce second tableau, quant à lui, donne le couplage afférent (Ca), le couplage efferent (Ce) et l'instabilité (I) des packages ; ceci va dans le sens de la conclusion tirée du premier tableau
 
 ## 4) Analyse approfondie
 ### 4.1) Tests
@@ -284,26 +294,6 @@ Le code déprécié est voué à être ne plus être utilisable, donc c'est une 
 - `public JsonElement parse(String json) throws JsonSyntaxException` ligne 118 est marquée comme dépréciée
 - `public JsonElement parse(Reader json) throws JsonIOException, JsonSyntaxException` est marquée comme dépréciée
 - `public JsonElement parse(JsonReader json) throws JsonIOException, JsonSyntaxException` est marquée comme dépréciée
-#### com.google.gson.
-- `` est marquée comme dépréciée
-#### com.google.gson.
-- `` est marquée comme dépréciée
-#### com.google.gson.
-- `` est marquée comme dépréciée
-#### com.google.gson.
-- `` est marquée comme dépréciée
-#### com.google.gson.
-- `` est marquée comme dépréciée
-#### com.google.gson.
-- `` est marquée comme dépréciée
-#### com.google.gson.
-- `` est marquée comme dépréciée
-#### com.google.gson.
-- `` est marquée comme dépréciée
-#### com.google.gson.
-- `` est marquée comme dépréciée
-
-
 
 ### 4.4) Duplication de code
 Il n'y a pratiquement pas de duplication de code, mais on peut trouver du code dupliqué dans le fichier `gson/gson/src/main.java/com/google/gson/internal/bind/TypeAdapters.java`, de façon très légère, par exemple pour les lignes 197-209 et 232-244, mais cela se répère dans les méthodes de type `public statis final TypeAdapter<T>` :
@@ -618,10 +608,8 @@ On vérifie que :
 On pourra placer les variables d'instances en début de classe et les méthodes publiques avant les méthodes privées, afin d'avoir un code mieux ordonné et de ne pas se perdre en cherchant des informations
 
 ### 5.4) Code mort
-Code il y a une API beaucoup de code n'est pas forcément appelé en interne
+Comme il y a une API, beaucoup de code n'est pas appelé en interne, mais ce n'est pas un problème
 
+### Autres code smells
 
-#### Documentation
-https://github.com/fabiovandewaeter/gson/blob/main/GsonDesignDocument.md
-https://www.javadoc.io/doc/com.google.code.gson/gson/latest/com.google.gson/module-summary.html
-https://github.com/fabiovandewaeter/gson/blob/main/UserGuide.md
+On constate que beaucoup de méthodes avec une grande complexité cyclomatique consistent en des listes de if/else ou de switch/case, ce qui rend leur lisibilité et maintenance compliqué ; il serait donc pertinent de réduire la taille de ces méthodes, par exemple avec de plus petites méthodes ou en délégant ce travail à des sous classes, pour profiter du polymorphisme
