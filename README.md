@@ -261,7 +261,49 @@ Le code est largement commenté dans le format de la Javadoc, avec les licences 
 Le code est donc largement commenté en dehors des packages `com.google.gson.internal`, car ces derniers ne sont pas censé être accédés directement lors de l'utilisation de l'API ; cela peut poser problème pour les développeurs eux-mêmes qui pourraient ne pas s'y retrouver par manque de documentation, et il serait pertinent d'ajouter des commentaires à certaines méthodes, notamment pour expliquer dans quel contexte elles sont utilisées dans le projet
 
 ### 4.3) Dépréciation
-(PAS FAIT)
+Le code déprécié est voué à être ne plus être utilisable, donc c'est une bonne raison de le remplacer ; on trouve du code déprécié dans ces classes :
+#### com.google.gson.internal.bind.TypeAdapters
+- `java.security.AccessController.doPrivileged(PrivilegedAction<Field[]> action)` ligne 969 qui est marquée comme dépréciée
+#### com.google.gson.stream.JsonWriter
+- `public final void setLenient(booblean lenient)` ligne 312 est marquée comme dépréciée
+#### com.google.gson.stream.JsonReader
+- `public final void setLenient(boolean lenient)` ligne 332 est aussi marquée comme dépréciée
+#### com.google.gson.Gson
+- `public Excluder excluder()` ligne 408 est marquée comme dépréciée
+#### com.google.gson.GsonBuilder
+- `public GsonBuilder setLenient()` ligne 548 est marquée comme dépréciée
+#### com.google.gson.JsonArray
+- `public char getAsCharacter()` ligne 371 est marquée comme dépréciée
+#### com.google.gson.JsonElement
+- `public JsonElement()` ligne 40 est marquée comme dépréciée
+- `public char getAsCharacter()` ligne 275 est marquée comme dépréciée
+#### com.google.gson.JsonNull
+- `public JsonNull()` ligne 40 est marquée comme dépréciée
+#### com.google.gson.JsonParser
+- `public JsonParser()` ligne 38 est marquée comme dépréciée
+- `public JsonElement parse(String json) throws JsonSyntaxException` ligne 118 est marquée comme dépréciée
+- `public JsonElement parse(Reader json) throws JsonIOException, JsonSyntaxException` est marquée comme dépréciée
+- `public JsonElement parse(JsonReader json) throws JsonIOException, JsonSyntaxException` est marquée comme dépréciée
+#### com.google.gson.
+- `` est marquée comme dépréciée
+#### com.google.gson.
+- `` est marquée comme dépréciée
+#### com.google.gson.
+- `` est marquée comme dépréciée
+#### com.google.gson.
+- `` est marquée comme dépréciée
+#### com.google.gson.
+- `` est marquée comme dépréciée
+#### com.google.gson.
+- `` est marquée comme dépréciée
+#### com.google.gson.
+- `` est marquée comme dépréciée
+#### com.google.gson.
+- `` est marquée comme dépréciée
+#### com.google.gson.
+- `` est marquée comme dépréciée
+
+
 
 ### 4.4) Duplication de code
 Il n'y a pratiquement pas de duplication de code, mais on peut trouver du code dupliqué dans le fichier `gson/gson/src/main.java/com/google/gson/internal/bind/TypeAdapters.java`, de façon très légère, par exemple pour les lignes 197-209 et 232-244, mais cela se répère dans les méthodes de type `public statis final TypeAdapter<T>` :
@@ -508,7 +550,7 @@ Nombre magique dans `gson/gson/src/main/java/com/google/gson/internal/bind/TypeA
 En dehors de ces problèmes de conventions Java, les variables ou méthodes du code principal ou des tests ont en grande majorité des noms pertinents qui reflètent leur utilité dans le projet et respectent les conventions de nommage
 
 ### 5.2) Nombre magique
-Pratiquement tous les nombres sont utilisés à travers de constantes avec des noms pertinents, cependant il existe quelques exemples de nombres magiques, ce qui risque de poser problème aux prochaines personnes qui auront à maintenir ce projet, car elles ne comprendront pas forcément la signification de ces nombres :
+Pratiquement tous les nombres sont utilisés à travers de constantes avec des noms pertinents (il n'y a pas de nombres magiques dans les tests par exemple), cependant il existe quelques exemples de nombres magiques, ce qui risque de poser problème aux prochaines personnes qui auront à maintenir ce projet, car elles ne comprendront pas forcément la signification de ces nombres :
 #### com.google.gson.internal.bind.TypeAdapters
 - `int value = src.get(i) ? 1 : 0;` ligne 142, où il serait possible de donner des noms au 1 et au 0, pour connaitre leur signification directement
 - `// Allow up to 255 to support unsigned values if (intValue > 255 || intValue < Byte.MIN_VALUE)`
@@ -529,7 +571,54 @@ ligne 210, où le 255 pourrait être remplacé par une constante, avec un nom pe
 #### com.google.gson.stream.JsonWriter
 - `if (c < 128)` ligne 744, qui devrait être remplacé par une constate pour préciser qu'il s'agit de la valeur maximale d'un char (signé)
 
+### 5.3) Structure du code
+On vérifie que :
+1) les variables d'instance sont au début de leur classe
+2) les méthodes publiques sont en haut et les privées plus bas
+#### com.google.gson.internal.bind.DefaultDateTypeAdapter
+2) les méthodes publiques et privées sont mélangées
+#### com.google.gson.internal.bind.JsonAdapterAnnotationTypeAdapterFactory
+2) les méthodes publiques et privées sont mélangées
+#### com.google.gson.internal.bind.JsonTreeReader
+2) les méthodes publiques et privées sont mélangées
+#### com.google.gson.internal.bind.JsonTreeWriter
+2) les méthodes publiques et privées sont mélangées
+#### com.google.gson.internal.bind.NumberTypeAdapter
+2) les méthodes publiques et privées sont mélangées
+#### com.google.gson.internal.bind.ObjectTypeAdapter
+2) les méthodes publiques et privées sont mélangées
+#### com.google.gson.internal.bind.ReflectiveTypeAdapterFactory
+2) les méthodes publiques et privées sont mélangées
+#### com.google.gson.internal.bind.TreeTypeAdapter
+2) les méthodes publiques et privées sont mélangées
+#### com.google.gson.internal.reflect.ReflectionHelper
+2) les méthodes publiques et privées sont mélangées
+#### com.google.gson.internal.sql.SqlTimestampTypeAdapter
+2) les méthodes publiques et privées sont mélangées
+#### com.google.gson.internal.$Gson$Types
+2) les méthodes publiques et privées sont mélangées
+#### com.google.gson.internal.JavaVersion
+2) les méthodes publiques et privées sont mélangées
+#### com.google.gson.internal.LazilyParsedNumber
+2) les méthodes publiques et privées sont mélangées
+#### com.google.gson.internal.ReflectionAccessFilterHelper
+2) les méthodes publiques et privées sont mélangées
+#### com.google.gson.reflect.TypeToken
+2) les méthodes publiques et privées sont mélangées
+#### com.google.gson.stream.JsonReader
+2) les méthodes publiques et privées sont mélangées
+#### com.google.gson.FormattingStyle
+2) les méthodes publiques et privées sont mélangées
+#### com.google.gson.GsonBuilder
+2) les méthodes publiques et privées sont mélangées
+#### com.google.gson.JsonArray
+2) les méthodes publiques et privées sont mélangées
 
+#### Améliorations possibles
+On pourra placer les variables d'instances en début de classe et les méthodes publiques avant les méthodes privées, afin d'avoir un code mieux ordonné et de ne pas se perdre en cherchant des informations
+
+### 5.4) Code mort
+Code il y a une API beaucoup de code n'est pas forcément appelé en interne
 
 
 #### Documentation
