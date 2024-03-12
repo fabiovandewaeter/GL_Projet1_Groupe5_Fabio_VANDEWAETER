@@ -161,7 +161,7 @@ La grande majorité des contributions ont eu lieu entre 2008 et 2015
 #### Activité du projet
 Le projet a été crée en 2008 et étant en "maintenance mode" depuis 2014 (ce qui signifie ici qu'il n'y aura pas de nouvelles fonctionnalités ajoutées), il est donc normal de voir que pratiquement aucun commit n'a eu lieu depuis 2014
 
-![commits-history](https://github.com/fabiovandewaeter/GL_Projet1_Groupe5_Fabio_VANDEWAETER/assets/134401954/4c5c4a66-0f8a-4a1b-b864-ce8c29b59207)
+![commits-history](./assets/history.png)
 
 
 #### Branches
@@ -177,7 +177,15 @@ Les pulls requests sont utilisées depuis 2015 sur le dépôt, avec des labels e
 
 ## 3) Architecture logicielle
 ### 3.1) Utilisation de bibliothèques extérieures
-(PAS FAIT)
+
+
+
+![dependencies](./assets/dependencies.png)
+Le tableau ci-dessus présente le nombre de classes dont dépend une classe (Dcy) ainsi que le nombre de packages dont elle dépend (PDpt) ; on constate que la moyenne est assez faible dans les deux cas, mais que des classes très importantes comme `com.google.gson.Gson` dépend de beaucoup plus de classes ou packages, ce qui était prévisible
+
+Les classes dépendant souvent de packages du projet, notamment des packages de `com.google.gson.internal`
+
+
 ### 3.2) Organisation en paquetages
 Le projet `gson/gson` est composé de 9 packages, qui se trouvent dans le dossier `gson/gson/src/main/java` :
 > `com.google.gson` contient tous les autres packages
@@ -200,6 +208,8 @@ Dans le dossier `gson/gson/src/test/java` on retrouve globalement la même struc
 4) `com.google.gson.regression` est un nouveau package
 
 Globalement, les packages ont des noms pertinents et séparent les fonctions du projet de façon pertinente, en plus de rester cohérent avec la structure des test
+
+Les classes du package `com.google.gson.internal` semblent utiliser des Factory pattern ou Adapter pattern si on se base sur leurs nom et sur le package dans lequel elles sont placées
 
 ### 3.3) Répartition des classes dans les paquetages
 Le projet comporte 252 classes au total dont 202 dans `gson/gson`, avec 83 classes dans `gson/gson/src/main` et 119 classes de test dans `gson/gson/src/test`
@@ -468,7 +478,6 @@ En dehors des constructeurs, on peut trouver les méthodes `com.google.gson.inte
 ## 5) Nettoyage de Code et Code smells
 
 ![Code smells](./assets/code_smells.png)
-
 Sonarcube détecte 382 code smells mais estime que cela est peu
 
 ![Debt](./assets/debt.png)
@@ -476,12 +485,29 @@ Sonarcube détecte 382 code smells mais estime que cela est peu
 Même si le code fonctionne, il serait très interessant de supprimer ces code smells et sonarcube estime que cela pourrait demander moins de 30 minutes pour une grande partie des code smells, et à l'extrême la classe `com.google.gson.stream.JsonReader` pourrait demander plus d'un jour de travail pour traiter cette dette technique
 
 ### 5.1) Règles de nommage
-
-nommage : `com.google.gson.internal.JavaVersion` majorJavaVersion
+#### Conventions de nommage Java
+On peut trouver des éléments qui ne respectent pas les conventions de nommage de Java, ce qui peut créer de l'ambiguité et des quiproquo pour un développeur qui ne connait pas déjà le code
+##### com.google.gson.internal.JavaVersion
+- `private statis final int majorJavaVersion` qui doit écrit en majuscules et snake case
+##### com.google.gson.internal.JsonReaderInternalAccess
+- `public static volatile JsonReaderInternalAccess INSTANCE` qui devrait être passé en final ou renommé
+##### com.google.gson.internal.bind.JsonTreeReader
+- `private String locationString()` devrait passer ne publique pour remplacer la méthode du même nom de sa classe parent
+##### com.google.gson.internal.bind.JsonTreeWriter
+- `private JsonElement peek` devrait aussi passer en public
+##### com.google.gson.internal.bind.ReflectiveTypeAdapterFactory
+- `abstract T finalize(A accumulator)` devrait être renomber pour éviter de la confondre avc `Object.finalize()`
+- `T finalize(T accumulator)` ligne 562, pour les mêmes raisons
+- `T finalize(T accumulator)` ligne 642, pour les mêmes raisons
 
 Nombre magique dans `gson/gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java` dans tous les trucs du stype TypeAdapter<T>
+##### com.google.gson.internal.sql.SqlTimestampTypeAdapter
+- `final TypeAdapter<Date> dateTypeAdapter` ligne 37 devrait être écrit en majuscules et snake case
 
+#### Autres améliorations possibles
+En dehors de ces problèmes de conventions Java, les variables ou méthodes du code principal ou des tests ont en grande majorité des noms pertinents qui reflètent leur utilité dans le projet et respectent les conventions de nommage
 
+### 5.2) Nombre magique
 
 
 
