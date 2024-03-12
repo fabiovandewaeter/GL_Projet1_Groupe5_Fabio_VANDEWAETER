@@ -2,15 +2,15 @@
 Dépôt Github avec le rendu : https://github.com/fabiovandewaeter/GL_Projet1_Groupe5_Fabio_VANDEWAETER
 
 Explication des dossiers et fichiers du dépôt du Projet1 :
-- `bac_a_sable` contient l'archive du dépôt `gson` analysé ainsi qu'un main Java pour pouvoir expérimenter (lancer avec la commande `make main`)
+- `bac_a_sable` contient l'archive du dépôt `gson` à analyser ainsi qu'un main Java pour pouvoir expérimenter (lancer avec la commande `make main`)
 - `README.md` sert de compte rendu à ce Projet 1
 
-## 1 Présentation globale du projet
+## 1) Présentation globale du projet
 
 Il s'agit du logiciel GSon qui a été forké :
 https://github.com/fabiovandewaeter/gson
 
-### 1.1 Utilité du projet
+### 1.1) Utilité du projet
 #### Fonctionnement du projet
 Ce programme permet, en Java, de convertir des objets Java en JSON, et inversement, avec des méthodes fonctionnant comme un `toString()`
 
@@ -105,7 +105,7 @@ Même objet ? false
 ##### > Sans Maven ou Gradle
 A la racine du projet, faire `mvn clean verify` pour obtenir l'archive dans le dossier `gson/gson/target/gson-2.10.2-SNAPSHOT.jar`
 
-Le dépôt contient divers dossiers, par exemple `gson/extras` qui contient des fonctionnalités non fournies par défaut ou `gson/metrics` qui permet aux développeurs de faire des benchmarks de leur côté, mais le dossier le plus important, avec plus de 200 classes, est le dossier `gson/gson`, qui permet d'obtenir l'archive
+Le dépôt contient divers dossiers, par exemple `gson/extras` qui contient des fonctionnalités non fournies par défaut ou `gson/metrics` qui permet aux développeurs de faire des benchmarks de leur côté, mais le dossier le plus important, avec plus de 200 classes, est le dossier `gson/gson`, qui permet d'obtenir l'archive principale
 
 ##### > Avec Gradle/Android
 
@@ -132,13 +132,11 @@ Toujours d'après le Readme, il faut ajouter ceci :
 </dependencies>
 ```
 
-Dans le dépôt de ce compte rendu, il y a un dossier `bac_a_sable` dans lequel se trouve un main Java permettant d'essayer gson avec la commande `make main`
-
 ### 1.2) Description du projet
 
 #### Readme
 
-Le dépôt contient un Readme à jour malgré le fait que le projet soit en "maintenance mode" (d'après le Readme), donc qu'il ne soit plus prévu d'ajouter de fonctionnalités
+Le dépôt contient un Readme à jour malgré le fait que le projet soit en "maintenance mode" (d'après le Readme), donc qu'il ne soit plus prévu d'ajouter des fonctionnalités
 
 #### Documentation
 
@@ -181,9 +179,10 @@ Les pulls requests sont utilisées depuis 2015 sur le dépôt, avec des labels e
 
 
 ![dependencies](./assets/dependencies.png)
+
 Le tableau ci-dessus présente le nombre de classes dont dépend une classe (Dcy) ainsi que le nombre de packages dont elle dépend (PDpt) ; on constate que la moyenne est assez faible dans les deux cas, mais que des classes très importantes comme `com.google.gson.Gson` dépend de beaucoup plus de classes ou packages, ce qui était prévisible
 
-Les classes dépendant souvent de packages du projet, notamment des packages de `com.google.gson.internal`
+Les classes dépendent souvent de packages du projet, notamment des packages de `com.google.gson.internal`
 
 
 ### 3.2) Organisation en paquetages
@@ -193,8 +192,10 @@ Le projet `gson/gson` est composé de 9 packages, qui se trouvent dans le dossie
 
 >> `com.google.gson.internal` qui permet au projet de fonctionner mais ne doit pas être accédé directement
 >>> `com.google.gson.internal.bind`
->>> `com.google.gson.internal.bind.util`
+>>>> `com.google.gson.internal.bind.util`
+
 >>> `com.google.gson.internal.reflect`
+
 >>> `com.google.gson.internal.sql`
 
 >> `com.google.gson.reflect` qui donne des informations sur les types
@@ -261,17 +262,18 @@ On pourrait ajouter des tests aux classes `com.google.gson.JsonParser` et `com.g
 ### 4.2) Commentaires
 #### Nombre de lignes de commentaire
 ![Javadoc coverage](./assets/javadoc_coverage.png)
+
 Le tableau ci-dessus présente différentes statistiques sur la javadoc de `gson/gson`, avec le coverage des classes (Jc), le coverage des attributs (Jf), le nombre de lignes de javadoc (JLOC) ainsi que le coverage des méthodes (Jm)
 
 #### Type de commentaire
 Le code est largement commenté dans le format de la Javadoc, avec les licences en début de fichier
 
-#### Parties sans commentaires et conclusion
+#### Parties sans commentaires | Conclusion
 
 Le code est donc largement commenté en dehors des packages `com.google.gson.internal`, car ces derniers ne sont pas censé être accédés directement lors de l'utilisation de l'API ; cela peut poser problème pour les développeurs eux-mêmes qui pourraient ne pas s'y retrouver par manque de documentation, et il serait pertinent d'ajouter des commentaires à certaines méthodes, notamment pour expliquer dans quel contexte elles sont utilisées dans le projet
 
 ### 4.3) Dépréciation
-Le code déprécié est voué à être ne plus être utilisable, donc c'est une bonne raison de le remplacer ; on trouve du code déprécié dans ces classes :
+Le code déprécié est voué à ne plus être utilisable, c'est donc une bonne raison de le remplacer ; on trouve du code déprécié dans ces classes :
 #### com.google.gson.internal.bind.TypeAdapters
 - `java.security.AccessController.doPrivileged(PrivilegedAction<Field[]> action)` ligne 969 qui est marquée comme dépréciée
 #### com.google.gson.stream.JsonWriter
@@ -332,18 +334,19 @@ Il n'y a pratiquement pas de duplication de code, mais on peut trouver du code d
           }
 ```
 
+#### Améliorations possibles
 
-Il semble donc possible d'améliorer cela en créant de petites fonctions qui gèrent les différentes parties communes à ces méthodes
+Il semble possible d'améliorer cela en créant de petites fonctions qui gèrent les différentes parties communes à ces méthodes
 
 ### 4.5) God Classes
-Même si la majorité des classes sont peu complexes, quelques-unes sont particuliérement imposantes ; par exemple ces méthodes on une complexité (WMC) particuliérement élevée :
+Même si la majorité des classes sont peu complexes, quelques-unes sont particuliérement imposantes ; par exemple ces classes ont une complexité (WMC) particuliérement élevée :
 
 ![God Classes](./assets/god_class.png)
 
 Il en va de même pour les fichiers de tests de ces classes, mais cela est moins impactant
 
 #### Améliorations possibles
-Avec beaucoup de temps il serait possible de séparer ces classes en sous-classes plus spécialisées et simples à maintenir, même si cela demenderai beacoups de temps
+Avec beaucoup de temps il serait possible de séparer ces classes en sous-classes plus spécialisées et simples à maintenir, même si cela demanderai beaucoup de temps
 
 ### 4.6) Analyse des méthodes
 
@@ -351,7 +354,7 @@ Avec beaucoup de temps il serait possible de séparer ces classes en sous-classe
 
 ![Complexité](./assets/complexity.png)
 
-Le tableau ci-dessus nous donne la complexité cyclomatique (v(G)) totale et moyenne, et même si cette dernière basse, certaines méthodes sont beaucoup plus complexes, comme par exemple la méthode `com.google.gson.stream.JsonReader.doPeek()` qui a une complexité cyclomatique de 40 avec la même méthode de calcul, ce qui est problématique :
+Le tableau ci-dessus nous donne la complexité cyclomatique (v(G)) totale et moyenne, et même si cette dernière basse, certaines méthodes sont beaucoup plus complexes, comme par exemple la méthode `com.google.gson.stream.JsonReader.doPeek()` qui a une complexité cyclomatique de 40 avec la même méthode de calcul, ce qui est problématique (il semble important de réduire la taille de cette fonction en en créant d'autres plus petites, car le développement de cette méthode risque d'être fastidieux) :
 
 ```java
 int doPeek() throws IOException {
@@ -495,7 +498,7 @@ int doPeek() throws IOException {
 
 Même si nous avons vu que le coverage Javadoc du code est élevé, cette méthode `com.google.gson.stream.JsonReader.doPeek()` n'a aucun commentaires alors qu'elle est très complexe, ce qui aggrave le problème
 
-plusieurs méthodes complexes de cette classe ne sont pas testées non-plus, ce qui est un vrai problème
+Plusieurs méthodes complexes de cette classe ne sont pas testées non-plus, ce qui est un vrai problème
 
 #### Nombre de lignes de codes
 
@@ -510,31 +513,30 @@ En dehors des constructeurs, on peut trouver les méthodes `com.google.gson.inte
 ## 5) Nettoyage de Code et Code smells
 
 ![Code smells](./assets/code_smells.png)
+
 Sonarcube détecte 382 code smells mais estime que cela est peu
 
 ![Debt](./assets/debt.png)
 
-Même si le code fonctionne, il serait très interessant de supprimer ces code smells et sonarcube estime que cela pourrait demander moins de 30 minutes pour une grande partie des code smells, et à l'extrême la classe `com.google.gson.stream.JsonReader` pourrait demander plus d'un jour de travail pour traiter cette dette technique
+Même si le code fonctionne, il serait très intéressant de supprimer ces code smells et sonarcube estime que cela pourrait demander moins de 30 minutes pour une grande partie des code smells, et à l'extrême la classe `com.google.gson.stream.JsonReader` pourrait demander plus d'un jour de travail pour traiter cette dette technique
 
 ### 5.1) Règles de nommage
 #### Conventions de nommage Java
 On peut trouver des éléments qui ne respectent pas les conventions de nommage de Java, ce qui peut créer de l'ambiguité et des quiproquo pour un développeur qui ne connait pas déjà le code
 ##### com.google.gson.internal.JavaVersion
-- `private statis final int majorJavaVersion` qui doit écrit en majuscules et snake case
+- `private statis final int majorJavaVersion` qui être doit écrit en majuscule et snake case
 ##### com.google.gson.internal.JsonReaderInternalAccess
 - `public static volatile JsonReaderInternalAccess INSTANCE` qui devrait être passé en final ou renommé
 ##### com.google.gson.internal.bind.JsonTreeReader
-- `private String locationString()` devrait passer ne publique pour remplacer la méthode du même nom de sa classe parent
+- `private String locationString()` devrait passer en publique pour remplacer la méthode du même nom de sa classe parent
 ##### com.google.gson.internal.bind.JsonTreeWriter
 - `private JsonElement peek` devrait aussi passer en public
 ##### com.google.gson.internal.bind.ReflectiveTypeAdapterFactory
-- `abstract T finalize(A accumulator)` devrait être renomber pour éviter de la confondre avc `Object.finalize()`
+- `abstract T finalize(A accumulator)` devrait être renommée pour éviter de la confondre avec `Object.finalize()`
 - `T finalize(T accumulator)` ligne 562, pour les mêmes raisons
 - `T finalize(T accumulator)` ligne 642, pour les mêmes raisons
-
-Nombre magique dans `gson/gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java` dans tous les trucs du stype TypeAdapter<T>
 ##### com.google.gson.internal.sql.SqlTimestampTypeAdapter
-- `final TypeAdapter<Date> dateTypeAdapter` ligne 37 devrait être écrit en majuscules et snake case
+- `final TypeAdapter<Date> dateTypeAdapter` ligne 37 devrait être écrit en majuscule et snake case
 
 #### Autres améliorations possibles
 En dehors de ces problèmes de conventions Java, les variables ou méthodes du code principal ou des tests ont en grande majorité des noms pertinents qui reflètent leur utilité dans le projet et respectent les conventions de nommage
@@ -551,15 +553,15 @@ ligne 210, où le 255 pourrait être remplacé par une constante, avec un nom pe
 #### com.google.gson.internal.LinkedTreeMap
 - `return (key == null ? 0 : key.hashCode()) ^ (value == null ? 0 : value.hashCode());` ligne 525, où les 0 devraient être placés dans une constante pour signifier qu'ils sont la valeur par défaut
 #### com.google.gson.internal.JavaVersion
-- `return majorJavaVersion >= 9;` ligne 93, où le 9 devrait être placé dans une constate pour signifier la version minimale acceptée
+- `return majorJavaVersion >= 9;` ligne 93, où le 9 devrait être placé dans une constante pour signifier la version minimale acceptée
 #### com.google.gson.internal.$Gson$Types
-- `return (lowerBound != null ? 31+ lowerBound.hashCode() : 1) ^ (31 + upperBound.hashCode());` ligne 671, où les 31 et 1 devraient être placès dans des constantes
+- `return (lowerBound != null ? 31+ lowerBound.hashCode() : 1) ^ (31 + upperBound.hashCode());` ligne 671, où les 31 et 1 devraient être placés dans des constantes
 #### com.google.gson.stream.JsonReader
 - `builder = new StringBuilder(Math.max(estimatedLength, 16));` ligne 1091 et 1105, on peut remplacer les 16 par une constante
 - `builder = new StringBuilder(Math.max(i, 16));` ligne 1160, pour la même raison
-- `System.arraycopy(buffer, pos, buffer, 0, limit);` ligne 1416, expliquer ce qu'est le 0
+- `System.arraycopy(buffer, pos, buffer, 0, limit);` ligne 1416, pour expliquer ce qu'est le 0
 #### com.google.gson.stream.JsonWriter
-- `if (c < 128)` ligne 744, qui devrait être remplacé par une constate pour préciser qu'il s'agit de la valeur maximale d'un char (signé)
+- `if (c < 128)` ligne 744, qui devrait être remplacé par une constante pour préciser qu'il s'agit de la limite supérieure de la valeur d'un char signé
 
 ### 5.3) Structure du code
 On vérifie que :
@@ -605,7 +607,7 @@ On vérifie que :
 2) les méthodes publiques et privées sont mélangées
 
 #### Améliorations possibles
-On pourra placer les variables d'instances en début de classe et les méthodes publiques avant les méthodes privées, afin d'avoir un code mieux ordonné et de ne pas se perdre en cherchant des informations
+On pourra placer les variables d'instances en début de classe et les méthodes publiques avant les méthodes privées, afin d'avoir un code mieux ordonné, pour ne pas se perdre en cherchant des informations
 
 ### 5.4) Code mort
 Comme il y a une API, beaucoup de code n'est pas appelé en interne, mais ce n'est pas un problème
