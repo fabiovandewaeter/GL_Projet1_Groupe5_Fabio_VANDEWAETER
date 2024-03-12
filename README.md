@@ -1,5 +1,5 @@
 # GL_Projet1_Groupe5_Fabio_VANDEWAETER
-Dépôt Github avec le renud : https://github.com/fabiovandewaeter/GL_Projet1_Groupe5_Fabio_VANDEWAETER
+Dépôt Github avec le rendu : https://github.com/fabiovandewaeter/GL_Projet1_Groupe5_Fabio_VANDEWAETER
 
 Explication des dossiers et fichiers du dépôt du Projet1 :
 - `bac_a_sable` contient l'archive du dépôt `gson` analysé ainsi qu'un main Java pour pouvoir expérimenter (lancer avec la commande `make main`)
