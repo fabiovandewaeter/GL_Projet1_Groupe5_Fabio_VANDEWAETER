@@ -508,12 +508,12 @@ Nombre magique dans `gson/gson/src/main/java/com/google/gson/internal/bind/TypeA
 En dehors de ces problèmes de conventions Java, les variables ou méthodes du code principal ou des tests ont en grande majorité des noms pertinents qui reflètent leur utilité dans le projet et respectent les conventions de nommage
 
 ### 5.2) Nombre magique
-Pratiquement tous les nombres sont utilisés à travers de constantes avec des noms pertinents, cependant il existe quelques exemples de nombres magiques :
+Pratiquement tous les nombres sont utilisés à travers de constantes avec des noms pertinents, cependant il existe quelques exemples de nombres magiques, ce qui risque de poser problème aux prochaines personnes qui auront à maintenir ce projet, car elles ne comprendront pas forcément la signification de ces nombres :
 #### com.google.gson.internal.bind.TypeAdapters
 - `int value = src.get(i) ? 1 : 0;` ligne 142, où il serait possible de donner des noms au 1 et au 0, pour connaitre leur signification directement
 - `// Allow up to 255 to support unsigned values if (intValue > 255 || intValue < Byte.MIN_VALUE)`
-ligne 210, où le 255 pourrait être remplacé par une constante, avec un nom pertinent, au lieu d'ajouter un commentaire au dessus 
-- `// Allow up to 65535 to support unsigned values if (intValue > 65535 || intValue < Short.MIN_VALUE)` ligne 245, où le 65535 pourrait aussi être remplaçé par une constante
+ligne 210, où le 255 pourrait être remplacé par une constante, avec un nom pertinent, au lieu d'ajouter un commentaire au dessus, par exemple Byte.MAX_VALUE
+- `// Allow up to 65535 to support unsigned values if (intValue > 65535 || intValue < Short.MIN_VALUE)` ligne 245, où le 65535 pourrait aussi être remplaçé par une constante, par exemple Short.Max_VALUE
 #### com.google.gson.internal.NumberLimits
 - `if (Math.abs((long) decimal.scale()) >= 10_000)` ligne 26, qui n'utilise pas la constante `private statis final int MAX_NUMBER_STRING_LENGTH = 10_000` déjà définie au début de la classe pour remplacer le 10_000 (si le nom ne convient pas, il faudrait alors créer une seconde constante ou en changer le nom)
 #### com.google.gson.internal.LinkedTreeMap
@@ -522,6 +522,14 @@ ligne 210, où le 255 pourrait être remplacé par une constante, avec un nom pe
 - `return majorJavaVersion >= 9;` ligne 93, où le 9 devrait être placé dans une constate pour signifier la version minimale acceptée
 #### com.google.gson.internal.$Gson$Types
 - `return (lowerBound != null ? 31+ lowerBound.hashCode() : 1) ^ (31 + upperBound.hashCode());` ligne 671, où les 31 et 1 devraient être placès dans des constantes
+#### com.google.gson.stream.JsonReader
+- `builder = new StringBuilder(Math.max(estimatedLength, 16));` ligne 1091 et 1105, on peut remplacer les 16 par une constante
+- `builder = new StringBuilder(Math.max(i, 16));` ligne 1160, pour la même raison
+- `System.arraycopy(buffer, pos, buffer, 0, limit);` ligne 1416, expliquer ce qu'est le 0
+#### com.google.gson.stream.JsonWriter
+- `if (c < 128)` ligne 744, qui devrait être remplacé par une constate pour préciser qu'il s'agit de la valeur maximale d'un char (signé)
+
+
 
 
 #### Documentation
