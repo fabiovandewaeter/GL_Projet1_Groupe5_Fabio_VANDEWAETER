@@ -508,7 +508,20 @@ Nombre magique dans `gson/gson/src/main/java/com/google/gson/internal/bind/TypeA
 En dehors de ces problèmes de conventions Java, les variables ou méthodes du code principal ou des tests ont en grande majorité des noms pertinents qui reflètent leur utilité dans le projet et respectent les conventions de nommage
 
 ### 5.2) Nombre magique
-
+Pratiquement tous les nombres sont utilisés à travers de constantes avec des noms pertinents, cependant il existe quelques exemples de nombres magiques :
+#### com.google.gson.internal.bind.TypeAdapters
+- `int value = src.get(i) ? 1 : 0;` ligne 142, où il serait possible de donner des noms au 1 et au 0, pour connaitre leur signification directement
+- `// Allow up to 255 to support unsigned values if (intValue > 255 || intValue < Byte.MIN_VALUE)`
+ligne 210, où le 255 pourrait être remplacé par une constante, avec un nom pertinent, au lieu d'ajouter un commentaire au dessus 
+- `// Allow up to 65535 to support unsigned values if (intValue > 65535 || intValue < Short.MIN_VALUE)` ligne 245, où le 65535 pourrait aussi être remplaçé par une constante
+#### com.google.gson.internal.NumberLimits
+- `if (Math.abs((long) decimal.scale()) >= 10_000)` ligne 26, qui n'utilise pas la constante `private statis final int MAX_NUMBER_STRING_LENGTH = 10_000` déjà définie au début de la classe pour remplacer le 10_000 (si le nom ne convient pas, il faudrait alors créer une seconde constante ou en changer le nom)
+#### com.google.gson.internal.LinkedTreeMap
+- `return (key == null ? 0 : key.hashCode()) ^ (value == null ? 0 : value.hashCode());` ligne 525, où les 0 devraient être placés dans une constante pour signifier qu'ils sont la valeur par défaut
+#### com.google.gson.internal.JavaVersion
+- `return majorJavaVersion >= 9;` ligne 93, où le 9 devrait être placé dans une constate pour signifier la version minimale acceptée
+#### com.google.gson.internal.$Gson$Types
+- `return (lowerBound != null ? 31+ lowerBound.hashCode() : 1) ^ (31 + upperBound.hashCode());` ligne 671, où les 31 et 1 devraient être placès dans des constantes
 
 
 #### Documentation
