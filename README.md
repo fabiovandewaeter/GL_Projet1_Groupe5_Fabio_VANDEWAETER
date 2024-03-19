@@ -1,10 +1,13 @@
 # GL_Projet1_Groupe5_Fabio_VANDEWAETER
+
+
 Dépôt Github avec le rendu : https://github.com/fabiovandewaeter/GL_Projet1_Groupe5_Fabio_VANDEWAETER
 
 Explication des dossiers et fichiers du dépôt du Projet1 :
 - `bac_a_sable` contient l'archive du dépôt `gson` à analyser ainsi qu'un main Java pour pouvoir expérimenter (lancer avec la commande `make main`)
 - `README.md` sert de compte rendu à ce Projet 1
 
+# Partie 1 : Audit du projet
 ## 1) Présentation globale du projet
 
 Il s'agit du logiciel GSon qui a été forké :
@@ -524,7 +527,7 @@ Même si le code fonctionne, il serait très intéressant de supprimer ces code 
 #### Conventions de nommage Java
 On peut trouver des éléments qui ne respectent pas les conventions de nommage de Java, ce qui peut créer de l'ambiguité et des quiproquo pour un développeur qui ne connait pas déjà le code
 ##### com.google.gson.internal.JavaVersion
-- `private statis final int majorJavaVersion` qui être doit écrit en majuscule et snake case
+- `private static final int majorJavaVersion` qui être doit écrit en majuscule et snake case
 ##### com.google.gson.internal.JsonReaderInternalAccess
 - `public static volatile JsonReaderInternalAccess INSTANCE` qui devrait être passé en final ou renommé
 ##### com.google.gson.internal.bind.JsonTreeReader
@@ -615,3 +618,61 @@ Comme il y a une API, beaucoup de code n'est pas appelé en interne, mais ce n'e
 ### Autres code smells
 
 On constate que beaucoup de méthodes avec une grande complexité cyclomatique consistent en des listes de if/else ou de switch/case, ce qui rend leur lisibilité et maintenance compliqué ; il serait donc pertinent de réduire la taille de ces méthodes, par exemple avec de plus petites méthodes ou en délégant ce travail à des sous classes, pour profiter du polymorphisme
+
+
+# Partie 2 : Amélioration du projet
+## Modifications prévues dans la première partie
+On reprend ici les modifications qui ont été annoncées dans la première partie de ce projet et qui ont bien été appliquées
+
+Les modifications sont faites sur ce dépôt git : https://github.com/fabiovandewaeter/gson
+
+### Petites modifications
+#### Règles de nommage
+Les noms des variables ou fonctions sont modifiées pour respecter les conventions de nommage Java
+
+Commit : https://github.com/fabiovandewaeter/gson/commit/21ef7a7bec422cb2b6900484f70117d74165758a
+##### com.google.gson.internal.JavaVersion
+- `private static final int majorJavaVersion` est renommée en `private static final int MAJOR_JAVA_VERSION`
+##### com.google.gson.internal.bind.JsonTreeReader
+- `private String locationString()` est changée en public pour remplacer la méthode du même nom de sa classe parent
+##### com.google.gson.internal.bind.JsonTreeWriter
+- `private JsonElement peek()` est changée en public pour remplacer la méthode du même nom de sa classe parent
+#### Nombres magiques
+Commit : 
+
+
+IL FAUT FINIR CE QUI A PAS ETE COMMIT !!!!
+
+
+##### com.google.gson.internal.bind.TypeAdapters
+Les nombres magiques `1`, `0`, `255`, `65535` sont remplacés par des constantes
+##### com.google.gson.internal.NumberLimits
+`10000` est remplacé par la constante déjà présente dans la classe
+##### com.google.gson.internal.LinkedTreeMap
+(PAS FAIT)
+##### com.google.gson.internal.JavaVersion
+`9` est remplacé par une constante pour pouvoir facilement changer la version minimale
+##### com.google.gson.internal.$Gson$Types
+Les `31` sont remplacés par une constante pour pouvoir facilement changer la valeur utilisée dans le calcul du hash code
+##### com.google.gson.stream.JsonReader
+##### com.google.gson.stream.JsonWriter
+
+
+
+
+
+
+
+## Bonus
+### Modifications qui étaient prévues mais n'ont pas été faites
+#### Renommage
+- renommage de com.google.gson.internal.JsonReaderInternalAccess
+- renommage de abstract T finalize(A accumulator)
+- renommage de final TypeAdapter<Date> dateTypeAdapter car c'est pas en static final mais juste final
+#### Nombres magiques
+- les 0 dans `com.google.gson.internal.LinkedTreeMap` car c'est facilement compréhensibles sans constantes
+### Modifications qui n'étaient pas prévues mais qui ont été faites
+- les tests skipped ?
+- enlever les $$ de $Gson$Type par exemple et $Gson$Preconditions
+### Conclusion
+- Ce qu'on retient de cette matière
