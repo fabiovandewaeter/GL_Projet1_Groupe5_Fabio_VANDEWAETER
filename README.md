@@ -301,7 +301,7 @@ Le code déprécié est voué à ne plus être utilisable, c'est donc une bonne 
 - `public JsonElement parse(JsonReader json) throws JsonIOException, JsonSyntaxException` est marquée comme dépréciée
 
 ### 4.4) Duplication de code
-Il n'y a pratiquement pas de duplication de code, mais on peut trouver du code dupliqué dans le fichier `gson/gson/src/main.java/com/google/gson/internal/bind/TypeAdapters.java`, de façon très légère, par exemple pour les lignes 197-209 et 232-244, mais cela se répère dans les méthodes de type `public statis final TypeAdapter<T>` :
+Il n'y a pratiquement pas de duplication de code, mais on peut trouver du code dupliqué dans le fichier `gson/gson/src/main/java/com/google/gson/internal/bind/TypeAdapters.java`, de façon très légère, par exemple pour les lignes 197-209 et 232-244, mais cela se répère dans les méthodes de type `public statis final TypeAdapter<T>` :
 ```java
   public static final TypeAdapter<Number> SHORT =
       new TypeAdapter<Number>() {
@@ -666,7 +666,10 @@ L'objectif de cette section est de réorganiser le code des classes pour avoir l
 - `com.google.gson.internal.JavaVersion`
 - `com.google.gson.internal.bind.TreeTypeAdapter`
 - `com.google.gson.JsonArray`
-
+### Moyennes modifications
+- créer des méthodes communes pour le code dupliqué dans `com.google.gson.internal.bind.TypeAdapters`
+### Grandes modifications
+- créer une super classe pour les types de `com.google.gson.internal.bind.TypeAdapters`
 
 
 
