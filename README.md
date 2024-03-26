@@ -637,13 +637,9 @@ Commit : https://github.com/fabiovandewaeter/gson/commit/21ef7a7bec422cb2b690048
 - `private String locationString()` est changée en public pour remplacer la méthode du même nom de sa classe parent
 ##### com.google.gson.internal.bind.JsonTreeWriter
 - `private JsonElement peek()` est changée en public pour remplacer la méthode du même nom de sa classe parent
+
 #### Nombres magiques
 Commit : https://github.com/fabiovandewaeter/gson/commit/a10bbe7236d89a554995fb7c3fa6ee14485f9d0c
-
-
-IL FAUT FINIR CE QUI A PAS ETE COMMIT !!!!
-
-
 ##### com.google.gson.internal.bind.TypeAdapters
 Les nombres magiques `1`, `0`, `255`, `65535` sont remplacés par des constantes
 ##### com.google.gson.internal.NumberLimits
@@ -660,23 +656,34 @@ Les `31` sont remplacés par une constante pour pouvoir facilement changer la va
 ##### com.google.gson.stream.JsonWriter
 - `if (c < 128)` ligne 744, qui est remplacé par une constante `private static final int MAX_SIGNED_CHAR_VALUE = 128`
 
+#### Structure du code
+Commit : https://github.com/fabiovandewaeter/gson/commit/bf9c3e0e8cb4230ff36b01065b4a73de01ade3c4
+
+L'objectif de cette section est de réorganiser le code des classes pour avoir les méthodes publiques avant celles privées, afin de s'y retrouver plus facilement dans le code avec beaucoup de méthodes ; comme beaucoup de classes ne respectent pas ce principes, on réarrangera uniquement 5 classes en guise d'exemple :
+
+- `com.google.gson.internal.bind.JsonAdapterAnnotationTypeAdapterFactory`
+- `com.google.gson.internal.bind.JsonTreeWriter`
+- `com.google.gson.internal.JavaVersion`
+- `com.google.gson.internal.bind.TreeTypeAdapter`
+- `com.google.gson.JsonArray`
 
 
 
 
 
-
-## Bonus
-### Modifications qui étaient prévues mais n'ont pas été faites
-#### Renommage
+## Modifications qui étaient prévues mais n'ont pas été faites
+### Renommage
 - renommage de com.google.gson.internal.JsonReaderInternalAccess
 - renommage de abstract T finalize(A accumulator)
 - renommage de final TypeAdapter<Date> dateTypeAdapter car c'est pas en static final mais juste final
-#### Nombres magiques
+### Nombres magiques
 - les 0 dans `com.google.gson.internal.LinkedTreeMap` car c'est facilement compréhensibles sans constantes
 - dans `com.google.gson.stream.JsonReader` le 0 de `com.google.gson.stream.JsonReader`
-### Modifications qui n'étaient pas prévues mais qui ont été faites
+### Structure du code
+- comme le problème est présent dans beaucoup de classes, on le corrige uniquement dans 5 classes en guise d'exemple
+## Modifications qui n'étaient pas prévues mais qui ont été faites
 - les tests skipped ?
 - enlever les $$ de $Gson$Type par exemple et $Gson$Preconditions
-### Conclusion
-- Ce qu'on retient de cette matière
+## Conclusion
+### Ce qu'on retient de cette matière
+- comme ce n'est pas notre code on se rend compte que c'est compliqué de s'y retrouver donc qu'il faut faire au mieux pour en faciliter ça comprehension quand on code
