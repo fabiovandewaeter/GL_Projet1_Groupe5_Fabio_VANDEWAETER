@@ -638,7 +638,7 @@ Commit : https://github.com/fabiovandewaeter/gson/commit/21ef7a7bec422cb2b690048
 ##### com.google.gson.internal.bind.JsonTreeWriter
 - `private JsonElement peek()` est changée en public pour remplacer la méthode du même nom de sa classe parent
 #### Nombres magiques
-Commit : 
+Commit : https://github.com/fabiovandewaeter/gson/commit/a10bbe7236d89a554995fb7c3fa6ee14485f9d0c
 
 
 IL FAUT FINIR CE QUI A PAS ETE COMMIT !!!!
@@ -655,7 +655,10 @@ Les nombres magiques `1`, `0`, `255`, `65535` sont remplacés par des constantes
 ##### com.google.gson.internal.$Gson$Types
 Les `31` sont remplacés par une constante pour pouvoir facilement changer la valeur utilisée dans le calcul du hash code
 ##### com.google.gson.stream.JsonReader
+- `builder = new StringBuilder(Math.max(estimatedLength, 16));` ligne 1091 et 1105, les 16 sont remplacès par des 
+- `builder = new StringBuilder(Math.max(i, 16));` ligne 1160, pour la même raison
 ##### com.google.gson.stream.JsonWriter
+- `if (c < 128)` ligne 744, qui est remplacé par une constante `private static final int MAX_SIGNED_CHAR_VALUE = 128`
 
 
 
@@ -671,6 +674,7 @@ Les `31` sont remplacés par une constante pour pouvoir facilement changer la va
 - renommage de final TypeAdapter<Date> dateTypeAdapter car c'est pas en static final mais juste final
 #### Nombres magiques
 - les 0 dans `com.google.gson.internal.LinkedTreeMap` car c'est facilement compréhensibles sans constantes
+- dans `com.google.gson.stream.JsonReader` le 0 de `com.google.gson.stream.JsonReader`
 ### Modifications qui n'étaient pas prévues mais qui ont été faites
 - les tests skipped ?
 - enlever les $$ de $Gson$Type par exemple et $Gson$Preconditions
