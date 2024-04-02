@@ -620,6 +620,40 @@ Comme il y a une API, beaucoup de code n'est pas appelé en interne, mais ce n'e
 On constate que beaucoup de méthodes avec une grande complexité cyclomatique consistent en des listes de if/else ou de switch/case, ce qui rend leur lisibilité et maintenance compliqué ; il serait donc pertinent de réduire la taille de ces méthodes, par exemple avec de plus petites méthodes ou en délégant ce travail à des sous classes, pour profiter du polymorphisme
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Partie 2 : Amélioration du projet
 ## Modifications prévues dans la première partie
 On reprend ici les modifications qui ont été annoncées dans la première partie de ce projet et qui ont bien été appliquées
@@ -666,8 +700,36 @@ L'objectif de cette section est de réorganiser le code des classes pour avoir l
 - `com.google.gson.internal.JavaVersion`
 - `com.google.gson.internal.bind.TreeTypeAdapter`
 - `com.google.gson.JsonArray`
+
+#### Dépréciation
+Commit : https://github.com/fabiovandewaeter/gson/commit/32f453637fb7c6ce873ccea1b1d021b27e17ecc2
+
+Les modifications dela déprécaition sont réparties entre petites et moyennes modifications mais sont liées au même commit ; on prend 5 cas de dépréciations dans ceux trouvés lors de la partie 1 du projet en guise d'exemple, avec 2 petites modifications et 3 moyennes modifications :
+
+- `com.google.gson.JsonArray` : `public char getAsCharacter()` est renommé en `public char getFirstCharacter()` pour éviter la confusion décrite dans le commentaire justifiant la dépréciation 
+- `com.google.gson.JsonElement` : `public char getAsCharacter()` change pour la même raison
+
+#### Code mort
+Commit : 
+- `com.google.gson.MixedStreamTest` ligne 90 et 94 les `Car unused1`
+- `com.google.gson.Gson` `JsonToken unused = reader.peek();`
+
+
+
 ### Moyennes modifications
 - créer des méthodes communes pour le code dupliqué dans `com.google.gson.internal.bind.TypeAdapters`
+
+#### Dépréciation
+Commit : https://github.com/fabiovandewaeter/gson/commit/32f453637fb7c6ce873ccea1b1d021b27e17ecc2
+
+2 autres modifications plus petites se trouvent dans la section 'Déprécation' des petites modifications et sont contenues dans le même commit que cette section :
+
+- `com.google.gson.stream.JsonWriter` : `public final void setLenient(boolean lenient)` est déprécié et doit être remplacé par `public final void setStrictness(Strictness strictness)`, une méthode déjà implémentée mais qui n'a pas encore remplacé l'ancienne méthode partout dans le projet ; on modifie donc les appels à la méthode dépréciée dans le projet puis on la supprime de la classe
+- `com.google.gson.stream.JsonReader` : `public final void setLenient(boolean lenient)` est changée dans le projet pour les mêmes raisons
+- `com.google.gson.GsonBuilder` : `public final void setLenient(boolean lenient)` est changée dans le projet pour les mêmes raisons
+
+
+
 ### Grandes modifications
 - créer une super classe pour les types de `com.google.gson.internal.bind.TypeAdapters`
 
@@ -684,9 +746,16 @@ L'objectif de cette section est de réorganiser le code des classes pour avoir l
 - dans `com.google.gson.stream.JsonReader` le 0 de `com.google.gson.stream.JsonReader`
 ### Structure du code
 - comme le problème est présent dans beaucoup de classes, on le corrige uniquement dans 5 classes en guise d'exemple
+### Dépréciation
+- `com.google.gson.internal.bind.TypeAdapters` : `java.security.AccessController.doPrivileged(PrivilegedAction<Field[]> action)` est déprécié depuis Java 17 mais il n'est pour le moment pas donné d'alternative, donc ce code ne peut pas encore être remplacé
+- `com.google.gson.Gson` : `public Excluder excluder()` ligne 408 devait être modifié mais il n'y a pas d'alternative implémentée par les développeurs du projet
 ## Modifications qui n'étaient pas prévues mais qui ont été faites
 - les tests skipped ?
 - enlever les $$ de $Gson$Type par exemple et $Gson$Preconditions
 ## Conclusion
-### Ce qu'on retient de cette matière
-- comme ce n'est pas notre code on se rend compte que c'est compliqué de s'y retrouver donc qu'il faut faire au mieux pour en faciliter ça comprehension quand on code
+### Ce que cette matière m'a appris
+Je retiens de cette matière qu'elle nous a permis de nous améliorer sur 2 points :
+1) C'est la première fois durant notre licence que nous avons l'occasion de travailler sur un vrai projet, qui est composé de beaucoup de classes, ce qui nous permet de nous rendre compte d'à quel point la maintenance d'un projet devient compliquée au fil des années
+2) Nous sommes allé plus loin que dans les autres matières, où l'objectif est d'abord d'obtenir un programme qui fonctionne, en cherchant à éviter les code smells qui rendent des programmes fonctionnels compliqués à maintenir, ce qui n'est pas acceptable non-plus
+
+Cela nous permet, même lors de nos projets plus petits, de comprendre l'importance des bonnes pratiques de développement et de savoir les mettre en place
