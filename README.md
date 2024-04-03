@@ -710,14 +710,28 @@ Les modifications dela déprécaition sont réparties entre petites et moyennes 
 - `com.google.gson.JsonElement` : `public char getAsCharacter()` change pour la même raison
 
 #### Code mort
-Commit : 
-- `com.google.gson.MixedStreamTest` ligne 90 et 94 les `Car unused1`
-- `com.google.gson.Gson` `JsonToken unused = reader.peek();`
+Commit : https://github.com/fabiovandewaeter/gson/commit/20836f0ccb76ba07154a6fc2eb95a3a90c86246d
 
+- `com.google.gson.MixedStreamTest` ligne 90 et 94 au niveau des `Car unused1` qui ne sont jamais utilisées, même si ces variables ont bien une valeur suite à l'appel de la méthode
+- `com.google.gson.Gson` : `JsonToken unused = reader.peek();` pour la même raison
 
+#### Autres modifications
+Commit : https://github.com/fabiovandewaeter/gson/commit/b3b1521ba556171c34f9eb3e408a6ad8dfa5e3e1
+
+On modifie les noms des classes `com.google.gson.$Gson$Types` et `com.google.gson.$Gson$Preconditions` pour enlever les symboles '$', ce qui demande de modifier du code dans plusieurs autres classes du projet
 
 ### Moyennes modifications
 - créer des méthodes communes pour le code dupliqué dans `com.google.gson.internal.bind.TypeAdapters`
+
+#### Réduction de la complexité cyclomatique d’une méthode
+##### com.google.gson.stream.JsonReader
+1) Commit : https://github.com/fabiovandewaeter/gson/commit/5ade9a9b366e2583ebb0a12d4293b300437857dc
+
+On modifie la méthode `private boolean isLiteral(char c) throws IOException` qui utilisait de nombreux switch/case, ce qui rendait le code peu lisible et demandait de supprimer un warning de type `fall-through` ; on ajoute ainsi la constante `static final String NON_LITERAL_CHARACTERS = "/\\;#={}[]:, \t\f\r\n"` représentant les caractères non litéraux et qui est utilisé pour simplifier les cas
+
+2) Commit : https://github.com/fabiovandewaeter/gson/commit/f8f0fafec190aab297b0655dd64a1e12f4f79c83
+
+Ce commit réemploie ce qui a été modifié au dessus pour supprimer les switch/case, les suppressions de warnings `fall-through` et du flag `findNonLiteralCharacter`
 
 #### Dépréciation
 Commit : https://github.com/fabiovandewaeter/gson/commit/32f453637fb7c6ce873ccea1b1d021b27e17ecc2
@@ -749,6 +763,8 @@ Commit : https://github.com/fabiovandewaeter/gson/commit/32f453637fb7c6ce873ccea
 ### Dépréciation
 - `com.google.gson.internal.bind.TypeAdapters` : `java.security.AccessController.doPrivileged(PrivilegedAction<Field[]> action)` est déprécié depuis Java 17 mais il n'est pour le moment pas donné d'alternative, donc ce code ne peut pas encore être remplacé
 - `com.google.gson.Gson` : `public Excluder excluder()` ligne 408 devait être modifié mais il n'y a pas d'alternative implémentée par les développeurs du projet
+### Tests
+- `com.google.gson.JsonElement` : il s'agit d'une classe abstraite qui n'a pas de comportement particulier, donc la classe de test n'a même pas été crée et n'est pas vraiment utile
 ## Modifications qui n'étaient pas prévues mais qui ont été faites
 - les tests skipped ?
 - enlever les $$ de $Gson$Type par exemple et $Gson$Preconditions
