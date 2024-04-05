@@ -744,30 +744,40 @@ Commit : https://github.com/fabiovandewaeter/gson/commit/32f453637fb7c6ce873ccea
 
 
 
+
 ### Grandes modifications
-- créer une super classe pour les types de `com.google.gson.internal.bind.TypeAdapters`
+#### Décomposer une god classe
+Commit : https://github.com/fabiovandewaeter/gson/commit/05b74474dc3b079339db76ac19a7d4ae9aacd43a
+
+On décompose la classe `com.google.gson.internal.bind.TypeAdapters`, qui est contituée de nombreuses classes statiques pour adapter à un type particulier, en des fichiers de classe séparés dans le package `com.google.gson.internal.bind.adapters`
+
+L'objectif est de permettre d'ajouter ou de modifier facilement de nouveaux types d'adaptateurs ou de pouvoir faire des tests unitaires plus simplement
 
 
 
 
 ## Modifications qui étaient prévues mais n'ont pas été faites
+### Dépréciation
+- `com.google.gson.internal.bind.TypeAdapters` : `java.security.AccessController.doPrivileged(PrivilegedAction<Field[]> action)` est déprécié depuis Java 17 mais il n'est pour le moment pas donné d'alternative, donc ce code ne peut pas encore être remplacé
+- `com.google.gson.Gson` : `public Excluder excluder()` ligne 408 devait être modifié mais il n'y a pas d'alternative implémentée par les développeurs du projet
+### Nombres magiques
+- les 0 dans `com.google.gson.internal.LinkedTreeMap` car c'est ce nombre est facilement compréhensibles sans ajouter une constantes
+- dans `com.google.gson.stream.JsonReader` le 0 de `com.google.gson.stream.JsonReader` pour la même raison
 ### Renommage
 - renommage de com.google.gson.internal.JsonReaderInternalAccess
 - renommage de abstract T finalize(A accumulator)
 - renommage de final TypeAdapter<Date> dateTypeAdapter car c'est pas en static final mais juste final
-### Nombres magiques
-- les 0 dans `com.google.gson.internal.LinkedTreeMap` car c'est facilement compréhensibles sans constantes
-- dans `com.google.gson.stream.JsonReader` le 0 de `com.google.gson.stream.JsonReader`
 ### Structure du code
-- comme le problème est présent dans beaucoup de classes, on le corrige uniquement dans 5 classes en guise d'exemple
-### Dépréciation
-- `com.google.gson.internal.bind.TypeAdapters` : `java.security.AccessController.doPrivileged(PrivilegedAction<Field[]> action)` est déprécié depuis Java 17 mais il n'est pour le moment pas donné d'alternative, donc ce code ne peut pas encore être remplacé
-- `com.google.gson.Gson` : `public Excluder excluder()` ligne 408 devait être modifié mais il n'y a pas d'alternative implémentée par les développeurs du projet
+- comme le problème de structuration du code est présent dans beaucoup de classes, on le corrige uniquement dans 5 classes en guise d'exemple
 ### Tests
 - `com.google.gson.JsonElement` : il s'agit d'une classe abstraite qui n'a pas de comportement particulier, donc la classe de test n'a même pas été crée et n'est pas vraiment utile
 ## Modifications qui n'étaient pas prévues mais qui ont été faites
-- les tests skipped ?
-- enlever les $$ de $Gson$Type par exemple et $Gson$Preconditions
+- enlever les symboles `$` de `$Gson$Type` et `$Gson$Preconditions`
+- décomposer la classes `com.google.gson.internal.bind.TypeAdapters` en créant un package pour les différents types d'adaptateurs
+
+
+
+
 ## Conclusion
 ### Ce que cette matière m'a appris
 Je retiens de cette matière qu'elle nous a permis de nous améliorer sur 2 points :
