@@ -636,9 +636,8 @@ On constate que beaucoup de méthodes avec une grande complexité cyclomatique c
 
 
 
-
-
-
+====================================================================================
+====================================================================================
 
 
 
@@ -658,7 +657,7 @@ On constate que beaucoup de méthodes avec une grande complexité cyclomatique c
 ## Modifications prévues dans la première partie
 On reprend ici les modifications qui ont été annoncées dans la première partie de ce projet et qui ont bien été appliquées
 
-Les modifications sont faites sur ce dépôt git : https://github.com/fabiovandewaeter/gson
+Les modifications sont faites sur ce dépôt Github : https://github.com/fabiovandewaeter/gson
 
 ### Petites modifications
 #### Règles de nommage
@@ -678,14 +677,12 @@ Commit : https://github.com/fabiovandewaeter/gson/commit/a10bbe7236d89a554995fb7
 Les nombres magiques `1`, `0`, `255`, `65535` sont remplacés par des constantes
 ##### com.google.gson.internal.NumberLimits
 `10000` est remplacé par la constante déjà présente dans la classe
-##### com.google.gson.internal.LinkedTreeMap
-(PAS FAIT)
 ##### com.google.gson.internal.JavaVersion
 `9` est remplacé par une constante pour pouvoir facilement changer la version minimale
 ##### com.google.gson.internal.$Gson$Types
 Les `31` sont remplacés par une constante pour pouvoir facilement changer la valeur utilisée dans le calcul du hash code
 ##### com.google.gson.stream.JsonReader
-- `builder = new StringBuilder(Math.max(estimatedLength, 16));` ligne 1091 et 1105, les 16 sont remplacès par des 
+- `builder = new StringBuilder(Math.max(estimatedLength, 16));` ligne 1091 et 1105, les 16 sont remplacés par des 
 - `builder = new StringBuilder(Math.max(i, 16));` ligne 1160, pour la même raison
 ##### com.google.gson.stream.JsonWriter
 - `if (c < 128)` ligne 744, qui est remplacé par une constante `private static final int MAX_SIGNED_CHAR_VALUE = 128`
@@ -704,16 +701,16 @@ L'objectif de cette section est de réorganiser le code des classes pour avoir l
 #### Dépréciation
 Commit : https://github.com/fabiovandewaeter/gson/commit/32f453637fb7c6ce873ccea1b1d021b27e17ecc2
 
-Les modifications dela déprécaition sont réparties entre petites et moyennes modifications mais sont liées au même commit ; on prend 5 cas de dépréciations dans ceux trouvés lors de la partie 1 du projet en guise d'exemple, avec 2 petites modifications et 3 moyennes modifications :
+Les modifications de code déprécié sont réparties entre petites et moyennes modifications mais sont liées au même commit ; on prend 5 cas de dépréciations dans ceux trouvés lors de la partie 1 du projet en guise d'exemple, avec 2 petites modifications et 3 moyennes modifications :
 
-- `com.google.gson.JsonArray` : `public char getAsCharacter()` est renommé en `public char getFirstCharacter()` pour éviter la confusion décrite dans le commentaire justifiant la dépréciation 
-- `com.google.gson.JsonElement` : `public char getAsCharacter()` change pour la même raison
+- `com.google.gson.JsonArray` : `public char getAsCharacter()` est renommée en `public char getFirstCharacter()` pour éviter la confusion décrite dans le commentaire justifiant la dépréciation 
+- `com.google.gson.JsonElement` : `public char getAsCharacter()` est changée pour la même raison
 
 #### Code mort
 Commit : https://github.com/fabiovandewaeter/gson/commit/20836f0ccb76ba07154a6fc2eb95a3a90c86246d
 
 - `com.google.gson.MixedStreamTest` ligne 90 et 94 au niveau des `Car unused1` qui ne sont jamais utilisées, même si ces variables ont bien une valeur suite à l'appel de la méthode
-- `com.google.gson.Gson` : `JsonToken unused = reader.peek();` pour la même raison
+- `com.google.gson.Gson` : modification `JsonToken unused = reader.peek();` pour la même raison
 
 #### Autres modifications
 Commit : https://github.com/fabiovandewaeter/gson/commit/b3b1521ba556171c34f9eb3e408a6ad8dfa5e3e1
@@ -721,8 +718,6 @@ Commit : https://github.com/fabiovandewaeter/gson/commit/b3b1521ba556171c34f9eb3
 On modifie les noms des classes `com.google.gson.$Gson$Types` et `com.google.gson.$Gson$Preconditions` pour enlever les symboles '$', ce qui demande de modifier du code dans plusieurs autres classes du projet
 
 ### Moyennes modifications
-- créer des méthodes communes pour le code dupliqué dans `com.google.gson.internal.bind.TypeAdapters`
-
 #### Réduction de la complexité cyclomatique d’une méthode
 ##### com.google.gson.stream.JsonReader
 1) Commit : https://github.com/fabiovandewaeter/gson/commit/5ade9a9b366e2583ebb0a12d4293b300437857dc
@@ -751,7 +746,7 @@ Commit : https://github.com/fabiovandewaeter/gson/commit/05b74474dc3b079339db76a
 
 On décompose la classe `com.google.gson.internal.bind.TypeAdapters`, qui est contituée de nombreuses classes statiques pour adapter à un type particulier, en des fichiers de classe séparés dans le package `com.google.gson.internal.bind.adapters`
 
-L'objectif est de permettre d'ajouter ou de modifier facilement de nouveaux types d'adaptateurs ou de pouvoir faire des tests unitaires plus simplement
+L'objectif est de permettre d'ajouter ou de modifier facilement de nouveaux types d'adaptateurs, ou de pouvoir faire des tests unitaires plus simplement
 
 
 
@@ -761,26 +756,26 @@ L'objectif est de permettre d'ajouter ou de modifier facilement de nouveaux type
 - `com.google.gson.internal.bind.TypeAdapters` : `java.security.AccessController.doPrivileged(PrivilegedAction<Field[]> action)` est déprécié depuis Java 17 mais il n'est pour le moment pas donné d'alternative, donc ce code ne peut pas encore être remplacé
 - `com.google.gson.Gson` : `public Excluder excluder()` ligne 408 devait être modifié mais il n'y a pas d'alternative implémentée par les développeurs du projet
 ### Nombres magiques
-- les 0 dans `com.google.gson.internal.LinkedTreeMap` car c'est ce nombre est facilement compréhensibles sans ajouter une constantes
-- dans `com.google.gson.stream.JsonReader` le 0 de `com.google.gson.stream.JsonReader` pour la même raison
+- Les 0 dans `com.google.gson.internal.LinkedTreeMap` car ce nombre est facilement compréhensibles sans ajouter une constantes
+- Dans `com.google.gson.stream.JsonReader` le 0 de `com.google.gson.stream.JsonReader` pour la même raison
 ### Renommage
-- renommage de com.google.gson.internal.JsonReaderInternalAccess
-- renommage de abstract T finalize(A accumulator)
-- renommage de final TypeAdapter<Date> dateTypeAdapter car c'est pas en static final mais juste final
+- Renommage de com.google.gson.internal.JsonReaderInternalAccess
+- Renommage de abstract T finalize(A accumulator)
+- Renommage de final TypeAdapter<Date> dateTypeAdapter car c'est pas en static final mais juste final
 ### Structure du code
-- comme le problème de structuration du code est présent dans beaucoup de classes, on le corrige uniquement dans 5 classes en guise d'exemple
+- Comme le problème de structuration du code est présent dans beaucoup de classes, on le corrige uniquement dans 5 classes en guise d'exemple
 ### Tests
 - `com.google.gson.JsonElement` : il s'agit d'une classe abstraite qui n'a pas de comportement particulier, donc la classe de test n'a même pas été crée et n'est pas vraiment utile
 ## Modifications qui n'étaient pas prévues mais qui ont été faites
-- enlever les symboles `$` de `$Gson$Type` et `$Gson$Preconditions`
-- décomposer la classes `com.google.gson.internal.bind.TypeAdapters` en créant un package pour les différents types d'adaptateurs
+- Enlever les symboles `$` de `$Gson$Type` et `$Gson$Preconditions`
+- Décomposer la classes `com.google.gson.internal.bind.TypeAdapters` en créant un package pour les différents types d'adaptateurs
 
 
 
 
 ## Conclusion
 ### Ce que cette matière m'a appris
-Je retiens de cette matière qu'elle nous a permis de nous améliorer sur 2 points :
+Je retiens de cette matière qu'elle nous a permis de nous améliorer sur ces 2 points :
 1) C'est la première fois durant notre licence que nous avons l'occasion de travailler sur un vrai projet, qui est composé de beaucoup de classes, ce qui nous permet de nous rendre compte d'à quel point la maintenance d'un projet devient compliquée au fil des années
 2) Nous sommes allé plus loin que dans les autres matières, où l'objectif est d'abord d'obtenir un programme qui fonctionne, en cherchant à éviter les code smells qui rendent des programmes fonctionnels compliqués à maintenir, ce qui n'est pas acceptable non-plus
 
